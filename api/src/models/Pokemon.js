@@ -4,10 +4,19 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   sequelize.define('Pokemon', {
-    // id
+    // This allows you to uniquely identify each Pokemon in your database, 
+    // regardless of whether it came from the API or was manually created by a user
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
       primaryKey: true
+
+    },
+
+    apiId: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     },
 
     // name
@@ -47,6 +56,6 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: false
 
-    }
+    },
   });
 };
