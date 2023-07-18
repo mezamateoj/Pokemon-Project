@@ -6,17 +6,15 @@ const getAllTypes = async (req, res) => {
         const response = await axios.get('https://pokeapi.co/api/v2/type');
         const data = response.data.results
 
-        const allTypes = data.map(type => {
-            const allTypes = {
-                name: type.name
+        data?.map(t => {
+            const type = {
+                name: t.name
             }
+            Type.create(type)
         })
-
-        await Type.upsert(allTypes);
-
-
+        return res.status(200).json(data)
     } catch (error) {
-
+        return res.status(400).json({ error: error.message })
     }
 }
 

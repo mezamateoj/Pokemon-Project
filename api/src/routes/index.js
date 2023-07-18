@@ -6,20 +6,21 @@ const { getPokemonByName, checkBody, checkID, getAllPokemons, getPokemonByID, cr
 router.param('id', checkID);
 
 router
-    .route('/')
+    .route('/pokemons/name?')
+    .get(getPokemonByName)
+
+router
+    .route('/pokemons')
     .get(getAllPokemons)
     .post(checkBody, createPokemon)
 
 router
-    .route('/:id')
+    .route('/pokemons/:id')
     .get(getPokemonByID)
 
-router
-    .route('/:name')
-    .get(getPokemonByName)
 
 router
-    .route('/type')
+    .route('/types')
     .get(getAllTypes)
 
 

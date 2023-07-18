@@ -61,21 +61,24 @@ const getAllPokemons = async (req, res) => {
 }
 
 const getPokemonByName = async (req, res) => {
-    const { name } = req.query.toLowerCase();
+    const { name } = req.query;
+    console.log(name)
 
     try {
         if (name) {
             let pokemon = await Pokemon.findOne({ where: { name } })
+            console.log('here')
 
             if (!pokemon) {
                 const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
+                console.log(response.status)
 
-                if (response.statusCode === 404) {
+                if (response.status !== 200) {
                     throw Error(`Pokemon ${name} not found`)
                 }
                 pokemon = response.data
 
-                await Pokemon.create({
+                const newPokemon = {
                     apiId: pokemon.id,
                     name: pokemon.name,
                     image: pokemon.sprites.front_default,
@@ -83,12 +86,15 @@ const getPokemonByName = async (req, res) => {
                     attack: pokemon.stats[1].base_stat,
                     defense: pokemon.stats[2].base_stat,
                     speed: pokemon.stats[5].base_stat,
-                })
+                }
+                await Pokemon.create(newPokemon)
+
+                return res.status(200).json(newPokemon)
             }
             return res.status(200).json(pokemon)
         }
     } catch (error) {
-        return res.status(400).json({ error: error.message })
+        return res.status(404).json({ error: error.message })
     }
 }
 
