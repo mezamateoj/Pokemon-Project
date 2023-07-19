@@ -1,6 +1,28 @@
 const axios = require('axios');
 const { Pokemon, Type } = require('../db');
 
+const typeResponse = {
+    include: [
+        {
+            model: Type,
+            attributes: ['id', 'name'],  // Only include id and name for each type
+            through: {
+                attributes: [],  // Do not include any attributes from the join table
+            },
+        },
+    ],
+}
+
+const dbRelationship = async (response, newPokemon) => {
+    const pokemonTypes = response.types.map(type => type.type.name);
+
+    const typeInstances = await Type.findAll({ where: { name: pokemonTypes, } });
+
+    let pokemon = await Pokemon.create(newPokemon, { include: Type });
+    await pokemon.setTypes(typeInstances);
+
+    return pokemon
+}
 
 const checkID = (req, res, next, val) => {
     // hardcoded count:1281 pokemons in api
@@ -26,6 +48,7 @@ const checkBody = (req, res, next) => {
 }
 
 
+
 const getAllPokemons = async (req, res) => {
     try {
 
@@ -49,37 +72,21 @@ const getAllPokemons = async (req, res) => {
                 attack: detailedPokemon.stats[1].base_stat,
                 defense: detailedPokemon.stats[2].base_stat,
                 speed: detailedPokemon.stats[5].base_stat,
-                // types: detailedPokemon.types.map(t => t.type.name)
             }
-            let pokemonTypes = detailedPokemon.types.map(type => type.type.name);
 
-            let typeInstances = await Type.findAll({
-                where: {
-                    name: pokemonTypes,
-                }
-            });
-            const [pok, created] = await Pokemon.upsert(pokemonData, { include: Type });
-            await pok.setTypes(typeInstances);
-
+            let existingPokemon = await Pokemon.findOne({ where: { apiId: pokemonData.apiId } });
+            if (!existingPokemon) {
+                await dbRelationship(detailedPokemon, pokemonData);
+            }
             return pokemonData;
         }))
-
         const all = await Pokemon.findAll({
-            include: [
-                {
-                    model: Type,
-                    attributes: ['id', 'name'],  // Only include id and name for each type
-                    through: {
-                        attributes: [],  // Do not include any attributes from the join table
-                    },
-                },
-            ],
+            include: typeResponse['include']
         });
-
-        // const all = await Pokemon.findAll({ include: Type });
         return res.status(200).json(all)
 
     } catch (error) {
+        console.log('i fuck in here')
         return res.status(500).json({ error: error.message })
     }
 }
@@ -89,7 +96,7 @@ const getPokemonByName = async (req, res) => {
 
     try {
         if (name) {
-            let pokemon = await Pokemon.findOne({ where: { name } })
+            let pokemon = await Pokemon.findOne({ where: { name }, include: typeResponse['include'] })
 
             if (!pokemon) {
                 const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
@@ -109,17 +116,13 @@ const getPokemonByName = async (req, res) => {
                     speed: pokemon.stats[5].base_stat,
                 }
 
-                let pokemonTypes = pokemon.types.map(type => type.type.name);
+                await dbRelationship(pokemon, newPokemon)
 
-                let typeInstances = await Type.findAll({
-                    where: {
-                        name: pokemonTypes,
-                    }
+                const pokeName = await Pokemon.findOne({
+                    where: { name: name },
+                    include: typeResponse['include']
                 });
-                const pok = await Pokemon.create(newPokemon, { include: Type });
-                await pok.setTypes(typeInstances);
-
-                return res.status(200).json(pok)
+                return res.status(200).json(pokeName)
             }
             return res.status(200).json(pokemon)
         }
@@ -133,7 +136,7 @@ const getPokemonByID = async (req, res) => {
     const { id } = req.params;
     try {
         if (id) {
-            let pokemon = await Pokemon.findOne({ where: { apiId: id } })
+            let pokemon = await Pokemon.findOne({ where: { apiId: id }, include: typeResponse['include'] })
 
             if (!pokemon) {
                 const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -148,16 +151,15 @@ const getPokemonByID = async (req, res) => {
                     defense: pokemon.stats[2].base_stat,
                     speed: pokemon.stats[5].base_stat,
                 }
+                await dbRelationship(pokemon, newPokemon)
 
-                const pokeType = pokemon.types.map(t => t.type.name)
-                console.log(pokeType)
-                // await Pokemon.create(newPokemon)
-                // return res.status(200).json(newPokemon)
-                await newPokemon.addTypes(pokeType);
+                const pokeID = await Pokemon.findOne({
+                    where: { apiId: id },
+                    include: typeResponse['include']
+                });
 
-                return res.status(200).json(newPokemon);
+                return res.status(200).json(pokeID)
             }
-
             return res.status(200).json(pokemon)
         }
     } catch (error) {
@@ -170,7 +172,7 @@ const createPokemon = async (req, res) => {
     const { name, image, health, attack, defense, speed, types } = req.body;
 
     try {
-        let pokemon = await Pokemon.findOne({ where: { name: name } })
+        let pokemon = await Pokemon.findOne({ where: { name: name }, include: typeResponse['include'] })
 
         if (pokemon) {
             throw Error(`Pokemon ${name} already created`)
@@ -187,8 +189,19 @@ const createPokemon = async (req, res) => {
                 types: types
 
             }
-            await Pokemon.create(newPokemon)
-            return res.status(200).json(newPokemon)
+
+            const pokemonTypes = newPokemon.types.map(t => t)
+            const typeInstances = await Type.findAll({ where: { name: pokemonTypes, } });
+
+            let pokemon = await Pokemon.create(newPokemon, { include: Type });
+            await pokemon.setTypes(typeInstances);
+
+            const pokeCreated = await Pokemon.findOne({
+                where: { name: name },
+                include: typeResponse['include']
+            });
+
+            return res.status(200).json(pokeCreated)
         }
 
     } catch (error) {
