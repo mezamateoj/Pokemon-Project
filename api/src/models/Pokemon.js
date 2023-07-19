@@ -16,13 +16,15 @@ module.exports = (sequelize) => {
 
     apiId: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      unique: true
     },
 
     // name
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true
     },
 
     // path to img sprites.front_default  
@@ -57,5 +59,10 @@ module.exports = (sequelize) => {
       allowNull: false
 
     },
-  });
+
+    // types: {
+    //   type: DataTypes.ARRAY(DataTypes.STRING),
+    //   allowNull: false
+    // }
+  }, { timestamps: false });
 };

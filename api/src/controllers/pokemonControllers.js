@@ -1,5 +1,6 @@
 const axios = require('axios');
-const { Pokemon } = require('../db');
+const { Pokemon, Type } = require('../db');
+
 
 const checkID = (req, res, next, val) => {
     // hardcoded count:1281 pokemons in api
@@ -27,6 +28,7 @@ const checkBody = (req, res, next) => {
 
 const getAllPokemons = async (req, res) => {
     try {
+
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 12;
         const offset = (page - 1) * limit;
@@ -47,31 +49,50 @@ const getAllPokemons = async (req, res) => {
                 attack: detailedPokemon.stats[1].base_stat,
                 defense: detailedPokemon.stats[2].base_stat,
                 speed: detailedPokemon.stats[5].base_stat,
+                // types: detailedPokemon.types.map(t => t.type.name)
             }
-            // Save it in your database
-            await Pokemon.upsert(pokemonData);
+            let pokemonTypes = detailedPokemon.types.map(type => type.type.name);
+
+            let typeInstances = await Type.findAll({
+                where: {
+                    name: pokemonTypes,
+                }
+            });
+            const [pok, created] = await Pokemon.upsert(pokemonData, { include: Type });
+            await pok.setTypes(typeInstances);
 
             return pokemonData;
         }))
-        return res.status(200).json(details)
+
+        const all = await Pokemon.findAll({
+            include: [
+                {
+                    model: Type,
+                    attributes: ['id', 'name'],  // Only include id and name for each type
+                    through: {
+                        attributes: [],  // Do not include any attributes from the join table
+                    },
+                },
+            ],
+        });
+
+        // const all = await Pokemon.findAll({ include: Type });
+        return res.status(200).json(all)
 
     } catch (error) {
-        return req.status(500).json({ error: error.message })
+        return res.status(500).json({ error: error.message })
     }
 }
 
 const getPokemonByName = async (req, res) => {
     const { name } = req.query;
-    console.log(name)
 
     try {
         if (name) {
             let pokemon = await Pokemon.findOne({ where: { name } })
-            console.log('here')
 
             if (!pokemon) {
                 const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
-                console.log(response.status)
 
                 if (response.status !== 200) {
                     throw Error(`Pokemon ${name} not found`)
@@ -87,9 +108,18 @@ const getPokemonByName = async (req, res) => {
                     defense: pokemon.stats[2].base_stat,
                     speed: pokemon.stats[5].base_stat,
                 }
-                await Pokemon.create(newPokemon)
 
-                return res.status(200).json(newPokemon)
+                let pokemonTypes = pokemon.types.map(type => type.type.name);
+
+                let typeInstances = await Type.findAll({
+                    where: {
+                        name: pokemonTypes,
+                    }
+                });
+                const pok = await Pokemon.create(newPokemon, { include: Type });
+                await pok.setTypes(typeInstances);
+
+                return res.status(200).json(pok)
             }
             return res.status(200).json(pokemon)
         }
@@ -118,8 +148,14 @@ const getPokemonByID = async (req, res) => {
                     defense: pokemon.stats[2].base_stat,
                     speed: pokemon.stats[5].base_stat,
                 }
-                await Pokemon.create(newPokemon)
-                return res.status(200).json(newPokemon)
+
+                const pokeType = pokemon.types.map(t => t.type.name)
+                console.log(pokeType)
+                // await Pokemon.create(newPokemon)
+                // return res.status(200).json(newPokemon)
+                await newPokemon.addTypes(pokeType);
+
+                return res.status(200).json(newPokemon);
             }
 
             return res.status(200).json(pokemon)
@@ -131,9 +167,33 @@ const getPokemonByID = async (req, res) => {
 
 
 const createPokemon = async (req, res) => {
+    const { name, image, health, attack, defense, speed, types } = req.body;
 
+    try {
+        let pokemon = await Pokemon.findOne({ where: { name: name } })
 
+        if (pokemon) {
+            throw Error(`Pokemon ${name} already created`)
+        }
 
+        if (!pokemon) {
+            const newPokemon = {
+                name: name,
+                image: image,
+                health: health,
+                attack: attack,
+                defense: defense,
+                speed: speed,
+                types: types
+
+            }
+            await Pokemon.create(newPokemon)
+            return res.status(200).json(newPokemon)
+        }
+
+    } catch (error) {
+        return res.status(404).json({ error: error.message })
+    }
 }
 
 
