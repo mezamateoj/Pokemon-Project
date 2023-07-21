@@ -1,9 +1,16 @@
 import './App.css';
+import Nav from './components/Nav';
+import Logo from './components/Logo';
+import Search from './components/Search';
+import Pokemons from './components/Pokemons';
 
 function App() {
   return (
     <div className="App">
-      <h1>Pokemon Project</h1>
+      <Nav />
+      <Logo />
+      <Search />
+      <Pokemons />
     </div>
   );
 }

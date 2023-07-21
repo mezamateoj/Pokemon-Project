@@ -1,0 +1,8 @@
+.logo {
+	width: 100%;
+	text-align: center; /* added property */
+}
+
+.logo-img {
+	width: 30%;
+}

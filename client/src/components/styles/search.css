@@ -1,0 +1,21 @@
+.search {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem;
+}
+
+.search > button {
+	margin-left: 5px;
+	cursor: pointer;
+}
+
+.search-bar {
+	width: 30%;
+	height: 2rem;
+	border-radius: 5px;
+	padding: 0 0.5rem;
+	font-size: 1rem;
+	margin-bottom: 10px;
+}
