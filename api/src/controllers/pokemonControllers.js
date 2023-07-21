@@ -86,7 +86,6 @@ const getAllPokemons = async (req, res) => {
         return res.status(200).json(all)
 
     } catch (error) {
-        console.log('i fuck in here')
         return res.status(500).json({ error: error.message })
     }
 }
