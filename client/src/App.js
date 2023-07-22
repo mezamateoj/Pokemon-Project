@@ -1,32 +1,23 @@
 import './App.css';
 import Nav from './components/Nav';
-import Logo from './components/Logo';
-import Search from './components/Search';
-import Pokemons from './components/Pokemons';
 import LandingPage from './components/LandinPage';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import Home from './components/Home';
+import Footer from './components/Footer';
+import CreatePokemon from './components/styles/CreatePokemon';
+import Details from './components/Details';
 
 function App() {
   return (
     <div className="App">
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <Nav />
-            <LandingPage />
-          </Route>
-          <Route exact path="/home">
-            <Logo />
-            <Search />
-            <Pokemons />
-          </Route>
-        </Switch>
-      </Router>
+      <Nav />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/create" element={<CreatePokemon />} />
+        <Route path="/details" element={<Details />} />
+      </Routes>
+      <Footer />
     </div>
   );
 }

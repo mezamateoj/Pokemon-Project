@@ -14,7 +14,7 @@ export default function LandingPage() {
 				</p>
 			</header>
 			<main className="context">
-				<h1>Start Exploring Pokemons with eased</h1>
+				<h1>Start Exploring!</h1>
 				<p>
 					A website to easily explore all pokemons available and check
 					stats, even create your own one!
