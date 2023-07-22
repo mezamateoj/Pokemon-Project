@@ -5,7 +5,16 @@ export default function LandingPage() {
 	return (
 		<div className="main">
 			<header className="title">
-				<h1>Explore Pokemons!</h1>
+				<h1>
+					Explore Pokemons!{" "}
+					{
+						<img
+							src="pokeball.png"
+							alt="pokeball"
+							style={{ width: "32px" }}
+						/>
+					}
+				</h1>
 				<p>
 					Lorem ipsum dolor sit amet consectetur adipisicing elit.
 					Nostrum non nam velit sequi minima beatae quas, dolorem

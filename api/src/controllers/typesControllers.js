@@ -12,7 +12,7 @@ const getAllTypes = async (req, res) => {
                 name: t.name
             }
             typeNames.push(type)
-            Type.create(type)
+            Type.upsert(type)
         })
 
         return res.status(200).json(typeNames)
