@@ -67,7 +67,8 @@ const getAllPokemons = async (req, res) => {
             const pokemonData = {
                 apiId: detailedPokemon.id,
                 name: detailedPokemon.name,
-                image: detailedPokemon.sprites.front_default,
+                image: detailedPokemon.sprites.other['official-artwork'].front_default,
+                // image: detailedPokemon.sprites.front_default,
                 health: detailedPokemon.stats[0].base_stat,
                 attack: detailedPokemon.stats[1].base_stat,
                 defense: detailedPokemon.stats[2].base_stat,
@@ -108,7 +109,7 @@ const getPokemonByName = async (req, res) => {
                 const newPokemon = {
                     apiId: pokemon.id,
                     name: pokemon.name,
-                    image: pokemon.sprites.front_default,
+                    image: pokemon.sprites.other['official-artwork'].front_default,
                     health: pokemon.stats[0].base_stat,
                     attack: pokemon.stats[1].base_stat,
                     defense: pokemon.stats[2].base_stat,
@@ -144,7 +145,7 @@ const getPokemonByID = async (req, res) => {
                 const newPokemon = {
                     apiId: pokemon.id,
                     name: pokemon.name,
-                    image: pokemon.sprites.front_default,
+                    image: pokemon.sprites.other['official-artwork'].front_default,
                     health: pokemon.stats[0].base_stat,
                     attack: pokemon.stats[1].base_stat,
                     defense: pokemon.stats[2].base_stat,

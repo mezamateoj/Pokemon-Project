@@ -11,6 +11,8 @@ import { useState, useEffect } from 'react';
 
 function App() {
   const [types, setTypes] = useState([]);
+  const [pokemons, setPokemons] = useState([]);
+
 
 
   // get types from server or db
@@ -30,8 +32,8 @@ function App() {
       <Nav />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/create" element={<CreatePokemon />} />
+        <Route path="/home" element={<Home pokemons={pokemons} setPokemons={setPokemons} />} />
+        <Route path="/create" element={<CreatePokemon pokemons={pokemons} setPokemons={setPokemons} />} />
         <Route path="/details" element={<Details />} />
       </Routes>
       <Footer />

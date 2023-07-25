@@ -4,8 +4,8 @@ import Pokemons from "./Pokemons";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function Home() {
-	const [pokemons, setTPokemons] = useState([]);
+export default function Home({ pokemons, setPokemons }) {
+	// const [pokemons, setTPokemons] = useState([]);
 	const [page, setPage] = useState(1); // [1, 2, 3, 4, 5
 
 	// get types from server or db
@@ -13,7 +13,7 @@ export default function Home() {
 		axios
 			.get(`http://localhost:3001/pokemons?page=${page}&limit=12`)
 			.then((res) => {
-				setTPokemons(res.data);
+				setPokemons(res.data);
 			})
 			.catch((err) => {
 				console.log(err);
