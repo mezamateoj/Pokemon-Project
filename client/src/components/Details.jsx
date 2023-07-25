@@ -19,16 +19,6 @@ export default function Details() {
 
 	return (
 		<div className="details">
-			<div className="detail-img">
-				<img src={details.image} alt={details.name} />
-			</div>
-			<div className="detail-info">
-				<h2>{details.name}</h2>
-				<h4>{details.health}</h4>
-				<h4>{details.attack}</h4>
-				<h4>{details.defense}</h4>
-				<h4>{details.speed}</h4>
-			</div>
 			<Pokemon key={details.id} details={details} />
 		</div>
 	);

@@ -5,7 +5,7 @@
 	align-items: center;
 	justify-content: center;
 	background-color: aquamarine;
-	width: 30%;
+	width: 28%;
 	height: 200px;
 	padding: 10px;
 	cursor: pointer;
@@ -18,8 +18,8 @@
 	transition: transform 0.5s;
 }
 
-.poke-img {
-	height: 100%;
+.poke-img > img {
+	width: 150px;
 }
 
 .info {
