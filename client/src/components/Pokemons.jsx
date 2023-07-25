@@ -1,9 +1,9 @@
 import "./styles/Pokemons.css";
 import Pokemon from "./Pokemon";
-export default function Pokemons({ pokemons }) {
+export default function Pokemons({ pokemons, displayPokemons }) {
 	return (
 		<div className="pokemons">
-			{pokemons.map((pokemon) => (
+			{displayPokemons?.map((pokemon) => (
 				<Pokemon key={pokemon.id} details={pokemon} />
 			))}
 		</div>

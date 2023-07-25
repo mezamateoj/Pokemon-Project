@@ -21,6 +21,20 @@ const dbRelationship = async (response, newPokemon) => {
     let pokemon = await Pokemon.create(newPokemon, { include: Type });
     await pokemon.setTypes(typeInstances);
 
+    // This method reloads the data for the Pokemon instance from the database, including its associated Types.
+    // final JSON response will include the Types for all Pokemons, whether or not they were already in the database.
+    await pokemon.reload({
+        include: [
+            {
+                model: Type,
+                attributes: ['id', 'name'],  // Only include id and name for each type
+                through: {
+                    attributes: [],  // Do not include any attributes from the join table
+                },
+            },
+        ],
+    });
+
     return pokemon
 }
 
@@ -50,14 +64,17 @@ const checkBody = (req, res, next) => {
 
 
 const getAllPokemons = async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 12;
+    const offset = (page - 1) * limit;
+    const endIndex = page * limit;
+
     try {
 
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 12;
-        const offset = (page - 1) * limit;
 
         const response = await axios.get(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`);
-        const pokemons = response.data.results
+        const pokemons = await response.data.results
+
 
         // now for each pokemon in result fetch their details
         const details = await Promise.all(pokemons?.map(async (pokemon) => {
@@ -68,28 +85,38 @@ const getAllPokemons = async (req, res) => {
                 apiId: detailedPokemon.id,
                 name: detailedPokemon.name,
                 image: detailedPokemon.sprites.other['official-artwork'].front_default,
-                // image: detailedPokemon.sprites.front_default,
                 health: detailedPokemon.stats[0].base_stat,
                 attack: detailedPokemon.stats[1].base_stat,
                 defense: detailedPokemon.stats[2].base_stat,
                 speed: detailedPokemon.stats[5].base_stat,
             }
 
-            let existingPokemon = await Pokemon.findOne({ where: { apiId: pokemonData.apiId } });
+            let existingPokemon = await Pokemon.findOne({ where: { apiId: pokemonData.apiId }, include: typeResponse['include'] });
+
             if (!existingPokemon) {
-                await dbRelationship(detailedPokemon, pokemonData);
+                existingPokemon = await dbRelationship(detailedPokemon, pokemonData);
             }
-            return pokemonData;
+            return existingPokemon
         }))
-        const all = await Pokemon.findAll({
-            include: typeResponse['include']
-        });
-        return res.status(200).json(all)
+
+        const all = details
+
+        const count = await Pokemon.count();
+        const totalPages = Math.ceil(count / limit);
+
+        return res.status(200).json({
+            count: count,
+            totalPages: totalPages,
+            currentPage: page,
+            pokemons: all
+        })
 
     } catch (error) {
         return res.status(500).json({ error: error.message })
     }
 }
+
+
 
 const getPokemonByName = async (req, res) => {
     const { name } = req.query;
