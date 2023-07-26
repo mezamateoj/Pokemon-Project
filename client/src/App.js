@@ -8,9 +8,14 @@ import CreatePokemon from './components/CreatePokemon';
 import Details from './components/Details';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getTypes } from './redux/typesSlice';
 
 function App() {
-  const [types, setTypes] = useState([]);
+  const types = useSelector(store => store.types);
+  console.log(types)
+  const dispatch = useDispatch();
+  // const [types, setTypes] = useState([]);
   const [pokemons, setPokemons] = useState([]);
   const [createdPokemons, setCreatedPokemons] = useState([]);
 
@@ -21,14 +26,15 @@ function App() {
 
   // get types from server or db
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/types")
-      .then((res) => {
-        setTypes(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(getTypes());
+    // axios
+    //   .get("http://localhost:3001/types")
+    //   .then((res) => {
+    //     setTypes(res.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   }, []);
 
   return (

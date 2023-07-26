@@ -1,46 +1,62 @@
 import Logo from "./Logo";
 import Search from "./Search";
 import Pokemons from "./Pokemons";
+import Pokemon from "./Pokemon";
 import "./styles/Home.css";
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { getPokemons, nextPage, prevPage } from "../redux/pokemonsSlice";
 
 export default function Home({ pokemons, setPokemons, createdPokemons }) {
-	const [page, setPage] = useState(1);
-	const [displayPokemons, setDisplayPokemons] = useState([]); // [1,2,3,4,5
-	const [totalPages, setTotalPages] = useState(0);
+	const page = useSelector((store) => store.pokemons.currentPage);
+	// const [page, setPage] = useState(1);
+	// const [displayPokemons, setDisplayPokemons] = useState([]); // [1,2,3,4,5
+	// const [totalPages, setTotalPages] = useState(0);
 	const [startPage, setStartPage] = useState(page);
 	const [endPage, setEndPage] = useState(page + 1); // showing five pages at a time
-	const [loading, setLoading] = useState(false);
+	// const [loading, setLoading] = useState(false);
 
-	// get types from server or db
-	async function getPokemon(page) {
-		try {
-			setLoading(true);
+	const pokemonsFromStore = useSelector((store) => store.pokemons);
+	console.log(pokemonsFromStore);
 
-			const res = await axios.get(
-				`http://localhost:3001/pokemons?page=${page}&limit=12`
-			);
-			console.log(res.data);
-			setPokemons((prevPokemons) => [
-				...prevPokemons,
-				...res.data.pokemons,
-			]);
-			setDisplayPokemons(res.data.pokemons);
-			// setPokemons(res.data.pokemons);
-			setPage(res.data.currentPage);
-			setTotalPages(res.data.totalPage);
-			setLoading(false);
-		} catch (error) {
-			console.error(error.message);
-		}
-	}
+	const loading = pokemonsFromStore.loading;
+	const displayPokemons = pokemonsFromStore.displayedPokemons;
+	const displayPokemonsByName = pokemonsFromStore.displayedPokemonsByName;
+	console.log(displayPokemonsByName);
+	const dispatch = useDispatch();
+
+	// // get types from server or db
+	// async function getPokemon(page) {
+	// 	try {
+	// 		setLoading(true);
+
+	// 		const res = await axios.get(
+	// 			`http://localhost:3001/pokemons?page=${page}&limit=12`
+	// 		);
+	// 		console.log(res.data);
+	// 		setPokemons((prevPokemons) => [
+	// 			...prevPokemons,
+	// 			...res.data.pokemons,
+	// 		]);
+	// 		setDisplayPokemons(pokemonsFromStore.displayedPokemons);
+	// 		// setPokemons(res.data.pokemons);
+	// 		setPage(res.data.currentPage);
+	// 		setTotalPages(res.data.totalPage);
+	// 		setLoading(false);
+	// 	} catch (error) {
+	// 		console.error(error.message);
+	// 	}
+	// }
 
 	useEffect(() => {
-		getPokemon(page);
+		dispatch(getPokemons(page));
+		// setDisplayPokemons(pokemonsFromStore.displayedPokemons);
+
+		// getPokemon(page);
 		setStartPage(page);
 		setEndPage(page + 3);
-	}, [page]); //  I've added the page variable as a dependency to useEffect. This means that useEffect will be triggered each time the page state changes.
+	}, [page, dispatch]); //  I've added the page variable as a dependency to useEffect. This means that useEffect will be triggered each time the page state changes.
 
 	return (
 		<>
@@ -48,9 +64,14 @@ export default function Home({ pokemons, setPokemons, createdPokemons }) {
 			<Search />
 			{loading ? (
 				<h1>Loading...</h1>
+			) : displayPokemonsByName.length > 0 ? (
+				<Pokemon
+					key={pokemonsFromStore.id}
+					details={displayPokemonsByName[0]}
+				/>
 			) : (
 				<Pokemons
-					key={pokemons.id}
+					key={pokemonsFromStore.id}
 					displayPokemons={[...createdPokemons, ...displayPokemons]}
 				/>
 			)}
@@ -62,7 +83,9 @@ export default function Home({ pokemons, setPokemons, createdPokemons }) {
 				{startPage === 1 ? (
 					""
 				) : (
-					<button onClick={() => setPage(page - 1)}>Previous</button>
+					<button onClick={() => dispatch(prevPage(page))}>
+						Previous
+					</button>
 				)}
 				{/* <button
 					onClick={() => setPage(page - 1)}
@@ -76,7 +99,7 @@ export default function Home({ pokemons, setPokemons, createdPokemons }) {
 				).map((pageNumber) => (
 					<button
 						key={pageNumber}
-						onClick={() => setPage(pageNumber)}
+						onClick={() => dispatch(getPokemons(pageNumber))}
 						className={pageNumber === page ? "active" : ""}
 					>
 						{pageNumber}
@@ -84,7 +107,7 @@ export default function Home({ pokemons, setPokemons, createdPokemons }) {
 				))}
 
 				{/* <span>page {page}</span> */}
-				<button onClick={() => setPage(page + 1)}>Next</button>
+				<button onClick={() => dispatch(nextPage(page))}>Next</button>
 			</div>
 		</>
 	);
