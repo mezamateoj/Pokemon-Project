@@ -2,7 +2,6 @@ import axios from "axios";
 const initialPokemonState = {
     pokemons: [],
     displayedPokemons: [],
-    displayedPokemonsByName: [],
     loading: false,
     currentPage: 1
 }
@@ -45,7 +44,8 @@ export default function pokemonReducer(state = initialPokemonState, action) {
             const filteredByName = state.pokemons.filter(pokemon => pokemon.name.toLowerCase().includes(action.payload.toLowerCase()))
             return {
                 ...state,
-                displayedPokemonsByName: filteredByName
+                displayedPokemons: filteredByName,
+                loading: false
             }
         default:
             return state;
