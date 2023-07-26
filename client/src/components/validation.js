@@ -1,5 +1,9 @@
 export default function validation(inputs) {
     let errors = {};
+
+    if (!inputs.id || (isNaN(parseInt(inputs.id)) || parseInt(inputs.id) <= 1281)) {
+        errors.id = 'ID required and must be a number > 1281';
+    }
     if (!inputs.name) {
         errors.name = 'Name required';
     }

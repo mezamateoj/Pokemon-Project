@@ -1,6 +1,7 @@
 import "./styles/Pokemons.css";
 import Pokemon from "./Pokemon";
-export default function Pokemons({ pokemons, displayPokemons }) {
+
+export default function Pokemons({ displayPokemons }) {
 	return (
 		<div className="pokemons">
 			{displayPokemons?.map((pokemon) => (

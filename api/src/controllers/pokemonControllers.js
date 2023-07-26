@@ -67,7 +67,6 @@ const getAllPokemons = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 12;
     const offset = (page - 1) * limit;
-    const endIndex = page * limit;
 
     try {
 
@@ -160,10 +159,12 @@ const getPokemonByName = async (req, res) => {
 
 
 const getPokemonByID = async (req, res) => {
+    console.log(req.params)
     const { id } = req.params;
     try {
         if (id) {
-            let pokemon = await Pokemon.findOne({ where: { apiId: id }, include: typeResponse['include'] })
+            let pokemon = await Pokemon.findOne({ where: { id: id }, include: typeResponse['include'] })
+
 
             if (!pokemon) {
                 const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -196,7 +197,8 @@ const getPokemonByID = async (req, res) => {
 
 
 const createPokemon = async (req, res) => {
-    const { name, image, health, attack, defense, speed, types } = req.body;
+    const { apiId, name, image, health, attack, defense, speed, types } = req.body;
+    console.log(req.body)
 
     try {
         let pokemon = await Pokemon.findOne({ where: { name: name }, include: typeResponse['include'] })
@@ -207,6 +209,7 @@ const createPokemon = async (req, res) => {
 
         if (!pokemon) {
             const newPokemon = {
+                apiId: apiId,
                 name: name,
                 image: image,
                 health: health,
@@ -214,7 +217,6 @@ const createPokemon = async (req, res) => {
                 defense: defense,
                 speed: speed,
                 types: types
-
             }
 
             const pokemonTypes = newPokemon.types.map(t => t)

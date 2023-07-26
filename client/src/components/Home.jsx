@@ -5,7 +5,7 @@ import "./styles/Home.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function Home({ pokemons, setPokemons }) {
+export default function Home({ pokemons, setPokemons, createdPokemons }) {
 	const [page, setPage] = useState(1);
 	const [displayPokemons, setDisplayPokemons] = useState([]); // [1,2,3,4,5
 	const [totalPages, setTotalPages] = useState(0);
@@ -46,11 +46,18 @@ export default function Home({ pokemons, setPokemons }) {
 		<>
 			<Logo />
 			<Search />
-			<Pokemons
+			{loading ? (
+				<h1>Loading...</h1>
+			) : (
+				<Pokemons
+					key={pokemons.id}
+					displayPokemons={[...createdPokemons, ...displayPokemons]}
+				/>
+			)}
+			{/* <Pokemons
 				key={pokemons.id}
-				pokemons={pokemons}
-				displayPokemons={displayPokemons}
-			/>
+				displayPokemons={[...createdPokemons, ...displayPokemons]}
+			/> */}
 			<div className="pagination">
 				{startPage === 1 ? (
 					""

@@ -12,6 +12,10 @@ import { useState, useEffect } from 'react';
 function App() {
   const [types, setTypes] = useState([]);
   const [pokemons, setPokemons] = useState([]);
+  const [createdPokemons, setCreatedPokemons] = useState([]);
+
+
+
 
 
 
@@ -32,9 +36,10 @@ function App() {
       <Nav />
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/home" element={<Home pokemons={pokemons} setPokemons={setPokemons} />} />
-        <Route path="/create" element={<CreatePokemon pokemons={pokemons} setPokemons={setPokemons} />} />
-        <Route path="/details" element={<Details />} />
+        <Route path="/home" element={<Home pokemons={pokemons} setPokemons={setPokemons} createdPokemons={createdPokemons} />} />
+        <Route path="/create" element={<CreatePokemon pokemons={pokemons} setPokemons={setPokemons}
+          setCreatedPokemons={setCreatedPokemons} />} />
+        <Route path="/details/:id" element={<Details />} />
       </Routes>
       <Footer />
     </div>
