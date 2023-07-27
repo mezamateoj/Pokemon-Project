@@ -38,6 +38,7 @@ const dbRelationship = async (response, newPokemon) => {
     return pokemon
 }
 
+// dont need it anymore
 const checkID = (req, res, next, val) => {
     // hardcoded count:1281 pokemons in api
     if (req.params.id * 1 > 1281) {
@@ -126,10 +127,13 @@ const getPokemonByName = async (req, res) => {
 
             if (!pokemon) {
                 const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
+                console.log(response.status)
 
+                // if pokemon not found in api or db
                 if (response.status !== 200) {
-                    throw Error(`Pokemon ${name} not found`)
+                    throw Error(`Pokemon named: ${name} not found`)
                 }
+
                 pokemon = response.data
 
                 const newPokemon = {
@@ -153,7 +157,7 @@ const getPokemonByName = async (req, res) => {
             return res.status(200).json(pokemon)
         }
     } catch (error) {
-        return res.status(404).json({ error: error.message })
+        return res.status(404).json({ error: error.message, message: error.response.statusText })
     }
 }
 
@@ -197,19 +201,18 @@ const getPokemonByID = async (req, res) => {
 
 
 const createPokemon = async (req, res) => {
-    const { apiId, name, image, health, attack, defense, speed, types } = req.body;
+    const { name, image, health, attack, defense, speed, types } = req.body;
     console.log(req.body)
 
     try {
         let pokemon = await Pokemon.findOne({ where: { name: name }, include: typeResponse['include'] })
 
         if (pokemon) {
-            throw Error(`Pokemon ${name} already created`)
+            throw Error(`Pokemon named:  ${name} already created`)
         }
 
         if (!pokemon) {
             const newPokemon = {
-                apiId: apiId,
                 name: name,
                 image: image,
                 health: health,
@@ -234,6 +237,9 @@ const createPokemon = async (req, res) => {
         }
 
     } catch (error) {
+        if (error.response) {
+            return res.status(400).json({ error: error.response.data.error })
+        }
         return res.status(400).json({ error: error.message })
     }
 }

@@ -1,10 +1,10 @@
 import "./styles/CreatePokemon.css";
-import axios from "axios";
 import { useState } from "react";
 import validation from "./validation";
+import { useDispatch, useSelector } from "react-redux";
+import { createPokemon } from "../redux/pokemonsSlice";
 
 const initialState = {
-	// apiId: "",
 	name: "",
 	image: "",
 	health: "",
@@ -19,38 +19,20 @@ const errorStyles = {
 	fontSize: "10px",
 };
 
-export default function CreatePokemon({
-	pokemons,
-	setPokemons,
-	setCreatedPokemons,
-}) {
+export default function CreatePokemon() {
 	const [formPokemon, setFormPokemon] = useState(initialState);
 	const [errors, setErrors] = useState(initialState);
+
+	const dispatch = useDispatch();
 
 	async function handleSubmit(e) {
 		e.preventDefault();
 		try {
-			const res = await axios.post(
-				"http://localhost:3001/pokemons",
-				formPokemon
-			);
-			console.log(res.data);
-			// add new pokemon to pokemons array in first position so it shows up first
-			// setPokemons((prevPokemons) => [res.data, ...prevPokemons]);
-			setCreatedPokemons((prevCreatedPokemons) => [
-				res.data,
-				...prevCreatedPokemons,
-			]);
-
-			// setPokemons([res.data, ...pokemons]); // add new pokemon to pokemons array
+			await dispatch(createPokemon(formPokemon));
 			setFormPokemon(initialState);
-			setErrors(initialState); // reset form
-			// need to fix types array
+			setErrors(initialState);
 		} catch (error) {
-			if (error.response) {
-				// error.response.data.error which contains the error message from your server.
-				alert(error.response.data.error);
-			}
+			alert(error.response.data.error);
 		}
 	}
 
@@ -84,19 +66,6 @@ export default function CreatePokemon({
 		<div className="create-form">
 			<h1>Create Pokemon</h1>
 			<form className="create-pokemon" onSubmit={handleSubmit}>
-				{/* <label htmlFor="apiId">id</label>
-				<input
-					type="text"
-					name="apiId"
-					value={formPokemon.apiId}
-					onChange={onChange}
-					onBlur={handleBlur}
-				/>
-				{errors.apiId && (
-					<p style={errorStyles} className="error">
-						{errors.apiId}
-					</p>
-				)} */}
 				<label htmlFor="name">Name</label>
 				<input
 					type="text"

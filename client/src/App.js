@@ -13,7 +13,6 @@ import { getTypes } from './redux/typesSlice';
 
 function App() {
   const types = useSelector(store => store.types);
-  console.log(types)
   const dispatch = useDispatch();
   // const [types, setTypes] = useState([]);
   const [pokemons, setPokemons] = useState([]);

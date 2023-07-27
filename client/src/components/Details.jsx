@@ -23,8 +23,11 @@ export default function Details() {
 	}, [id]);
 
 	return (
-		<div>
-			<Pokemon key={details.id} details={details} />
+		<div className="id-container">
+			<img src={details.image} alt={details.name} />
+			<div className="stats">
+				<h1>{details.name}</h1>
+			</div>
 		</div>
 	);
 }

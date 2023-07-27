@@ -11,9 +11,13 @@ export default function Search() {
 		setSearch(e.target.value);
 	}
 
-	function dispatchFilterByName() {
-		dispatch(filterByName(search));
-		setSearch("");
+	async function dispatchFilterByName() {
+		try {
+			await dispatch(filterByName(search));
+			setSearch("");
+		} catch (error) {
+			alert(`Pokemon: ${error.response.data.message}`);
+		}
 	}
 
 	return (

@@ -2,6 +2,7 @@ import axios from "axios";
 const initialPokemonState = {
     pokemons: [],
     displayedPokemons: [],
+    createdPokemons: [],
     loading: false,
     currentPage: 1
 }
@@ -23,11 +24,16 @@ export default function pokemonReducer(state = initialPokemonState, action) {
                 loading: false,
                 currentPage: action.payload.currentPage
             }
+        case 'CREATE_POKEMON':
+            return {
+                ...state,
+                pokemons: [...state.pokemons, action.payload],
+                createdPokemons: [...state.createdPokemons, action.payload]
+            }
         case 'nextPage':
             return {
                 ...state,
                 currentPage: action.payload
-
             }
 
         case 'prevPage':
@@ -41,12 +47,97 @@ export default function pokemonReducer(state = initialPokemonState, action) {
                 loading: true
             }
         case 'filterByName':
-            const filteredByName = state.pokemons.filter(pokemon => pokemon.name.toLowerCase().includes(action.payload.toLowerCase()))
+            // Assuming action.payload is an array of new pokemons
+            const newPokemon = action.payload
+
+            // Create a set of existing names for easy lookup
+            const existingNames = new Set(state.pokemons.map(pokemon => pokemon.name));
+
+            // Only add pokemons that don't already exist in the state
+            const newPokemonToAdd = newPokemon.filter(pokemon => !existingNames.has(pokemon.name));
+
+
             return {
                 ...state,
-                displayedPokemons: filteredByName,
+                pokemons: [...state.pokemons, ...newPokemonToAdd],
+                displayedPokemons: newPokemon,
                 loading: false
             }
+
+        case 'filterByType':
+            const filteredByType = state.pokemons.flat().filter(pokemon => pokemon.Types ? pokemon.Types.map(type => type.name).includes(action.payload) : 'No type found')
+            return {
+                ...state,
+                displayedPokemons: filteredByType,
+                loading: false
+            }
+        case 'filterByOrigin':
+
+            // console.log(state.pokemons.flat())
+            // console.log(state.pokemons.flat().filter(p => p.apiId === null))
+            if (action.payload === 'Created') {
+                return {
+                    ...state,
+                    displayedPokemons: state.pokemons.flat().filter(p => p.apiId === null),
+                    loading: false
+                }
+            }
+            if (action.payload === 'API') {
+                return {
+                    ...state,
+                    displayedPokemons: state.pokemons.flat().filter(p => p.apiId !== null).slice(-12),
+                    loading: false
+                }
+            }
+            break;
+        case 'resetFilters':
+            const resetFilters = state.pokemons.flat().filter(p => p.apiId !== null)
+
+            return {
+                ...state,
+                displayedPokemons: resetFilters.slice(-12),
+            }
+
+        case 'filterByAttack':
+            if (action.payload === 'A-Z') {
+                return {
+                    ...state,
+                    displayedPokemons: state.pokemons.flat().sort((a, b) => a.attack - b.attack),
+                    loading: false
+                }
+            }
+            if (action.payload === 'Z-A') {
+                return {
+                    ...state,
+                    displayedPokemons: state.pokemons.flat().sort((a, b) => b.attack - a.attack),
+                    loading: false
+                }
+            }
+            break;
+
+        case 'filterNameAscDsc':
+            if (action.payload === 'A-Z') {
+                return {
+                    ...state,
+                    displayedPokemons: state.pokemons.flat().sort((a, b) => a.name.localeCompare(b.name)),
+                    loading: false
+                }
+            }
+            if (action.payload === 'Z-A') {
+                return {
+                    ...state,
+                    displayedPokemons: state.pokemons.flat().sort((a, b) => b.name.localeCompare(a.name)),
+                    loading: false
+                }
+            }
+            break;
+
+        case 'switchLoading':
+            return {
+                ...state,
+                loading: !state.loading
+            }
+
         default:
             return state;
     }
@@ -67,10 +158,61 @@ export function filterByName(name) {
     return async function filterByNameThunk(dispatch) {
         dispatch({ type: 'loading' })
 
+        try {
+            const response = await axios.get(`http://localhost:3001/pokemons/name?name=${name}`);
+            dispatch({ type: 'filterByName', payload: [response.data] })
+            console.log(response.data)
 
-        const response = await axios.get(`http://localhost:3001/pokemons/name?name=${name}`);
-        console.log(response.data)
-        dispatch({ type: 'filterByName', payload: response.data.name })
+        } catch (error) {
+            dispatch({ type: 'switchLoading' })
+            throw (error);
+        }
+
+    }
+}
+
+export function createPokemon(pokemon) {
+    return async function createPokemonThunk(dispatch) {
+        dispatch({ type: 'loading' })
+
+        const response = await axios.post('http://localhost:3001/pokemons', pokemon);
+
+        dispatch({ type: 'CREATE_POKEMON', payload: response.data })
+    }
+}
+
+export function filterByType(type) {
+    return {
+        type: 'filterByType',
+        payload: type
+    }
+}
+
+export function filterByOrigin(origin) {
+    return {
+        type: 'filterByOrigin',
+        payload: origin
+    }
+}
+
+export function filterByAttack(attack) {
+    return {
+        type: 'filterByAttack',
+        payload: attack
+    }
+}
+
+export function filterNameAscDsc(name) {
+    return {
+        type: 'filterNameAscDsc',
+        payload: name
+    }
+}
+
+
+export function resetFilters() {
+    return {
+        type: 'resetFilters'
     }
 }
 

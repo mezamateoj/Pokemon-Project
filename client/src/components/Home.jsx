@@ -5,8 +5,9 @@ import "./styles/Home.css";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPokemons, nextPage, prevPage } from "../redux/pokemonsSlice";
+import Filters from "./Filters";
 
-export default function Home({ pokemons, setPokemons, createdPokemons }) {
+export default function Home() {
 	const page = useSelector((store) => store.pokemons.currentPage);
 	const [startPage, setStartPage] = useState(page);
 	const [endPage, setEndPage] = useState(page + 1); // showing five pages at a time
@@ -29,16 +30,17 @@ export default function Home({ pokemons, setPokemons, createdPokemons }) {
 		<>
 			<Logo />
 			<Search />
+			<Filters />
 
 			{loading ? (
 				<h1>Loading...</h1>
 			) : (
 				<Pokemons
-					key={pokemonsFromStore.id}
+					key={displayPokemons.id}
 					displayPokemons={
 						displayPokemons.length === 1
 							? displayPokemons
-							: [...createdPokemons, ...displayPokemons]
+							: [...displayPokemons]
 					}
 				/>
 			)}
