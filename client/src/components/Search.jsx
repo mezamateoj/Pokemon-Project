@@ -26,10 +26,12 @@ export default function Search() {
 				value={search}
 				className="search-bar"
 				type="text"
-				placeholder="🔍Search..."
+				placeholder="🔍pikachu..."
 				onChange={onChange}
 			/>
-			<button onClick={dispatchFilterByName}>Search</button>
+			<button className="pokemon-btn" onClick={dispatchFilterByName}>
+				<span>Search</span>
+			</button>
 		</div>
 	);
 }

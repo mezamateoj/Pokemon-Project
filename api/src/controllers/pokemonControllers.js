@@ -127,13 +127,12 @@ const getPokemonByName = async (req, res) => {
 
             if (!pokemon) {
                 const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
-                console.log(response.status)
 
                 // if pokemon not found in api or db
                 if (response.status !== 200) {
                     throw Error(`Pokemon named: ${name} not found`)
                 }
-
+                x
                 pokemon = response.data
 
                 const newPokemon = {

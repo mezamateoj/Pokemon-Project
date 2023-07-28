@@ -12,6 +12,7 @@ export default function Nav() {
 						color: "#fff",
 						cursor: "pointer",
 					}}
+					className="nav-home"
 				>
 					<li>Home</li>
 				</NavLink>
@@ -24,6 +25,7 @@ export default function Nav() {
 						color: "#fff",
 						cursor: "pointer",
 					}}
+					className="nav-create"
 				>
 					<li>Create</li>
 				</NavLink>
@@ -36,6 +38,7 @@ export default function Nav() {
 						color: "#fff",
 						cursor: "pointer",
 					}}
+					className="nav-details"
 				>
 					<li>Details</li>
 				</NavLink>

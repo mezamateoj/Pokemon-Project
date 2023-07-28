@@ -3,6 +3,7 @@
 	justify-content: center;
 	align-items: center;
 	margin-top: 15px;
+	gap: 6px;
 }
 
 .pagination > span {
@@ -11,7 +12,6 @@
 }
 
 .active {
-	background-color: #fff;
-	color: #000;
-	border: 2px solid #000;
+	color: red;
+	border-radius: 8px;
 }

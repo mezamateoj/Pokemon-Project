@@ -15,6 +15,7 @@ export default function Details() {
 			setDetails(res.data);
 		} catch (error) {
 			console.error(error.message);
+			alert(error.message);
 		}
 	}
 

@@ -38,24 +38,11 @@ export default function Filters() {
 	}
 
 	return (
-		<section className="filters">
-			<div className="type-filter">
-				<label htmlFor="type">Type Filters</label>
-				<div className="select-filters">
-					<select name="" id="" onChange={onSelectedType}>
-						{types.types?.map((type) => (
-							<option key={type.name} value={type.name}>
-								{type.name}
-							</option>
-						))}
-					</select>
-				</div>
-			</div>
-
+		<div className="filters">
 			<div className="order-filters">
 				<div className="select-filters">
-					<fieldset>
-						<legend>filter by:</legend>
+					<fieldset className="filter-fieldset">
+						<legend>Sort By:</legend>
 						<div>
 							<label htmlFor="attack">attack</label>
 							<input
@@ -77,6 +64,7 @@ export default function Filters() {
 								onChange={(e) => setFilter(e.target.value)}
 							/>
 						</div>
+
 						<select
 							name="filter"
 							id=""
@@ -88,6 +76,19 @@ export default function Filters() {
 					</fieldset>
 				</div>
 			</div>
+			<div className="type-filter">
+				<label htmlFor="type">Types</label>
+				<div className="select-filters">
+					<select name="" id="" onChange={onSelectedType}>
+						{types.types?.map((type) => (
+							<option key={type.name} value={type.name}>
+								{type.name}
+							</option>
+						))}
+					</select>
+				</div>
+			</div>
+
 			<div className="origin-filters">
 				<label htmlFor="origin">Origin</label>
 				<div className="select-filters">
@@ -97,7 +98,9 @@ export default function Filters() {
 					</select>
 				</div>
 			</div>
-			<button onClick={handleReset}>Reset</button>
-		</section>
+			<button className="pokemon-btn" onClick={handleReset}>
+				Reset
+			</button>
+		</div>
 	);
 }

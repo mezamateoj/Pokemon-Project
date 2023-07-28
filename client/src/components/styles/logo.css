@@ -1,8 +1,9 @@
 .logo {
 	width: 100%;
 	text-align: center; /* added property */
+	height: 160px;
 }
 
 .logo-img {
-	width: 30%;
+	width: 27%;
 }
