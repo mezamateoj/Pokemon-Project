@@ -4,8 +4,10 @@ import Pokemons from "./Pokemons";
 import "./styles/Home.css";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPokemons, nextPage, prevPage } from "../redux/pokemonsSlice";
+import { getPokemons } from "../redux/pokemonsSlice";
 import Filters from "./Filters";
+import Pagination from "./Pagination";
+import Loading from "./Loading";
 
 export default function Home() {
 	const page = useSelector((store) => store.pokemons.currentPage);
@@ -16,6 +18,7 @@ export default function Home() {
 	console.log(pokemonsFromStore);
 
 	const loading = pokemonsFromStore.loading;
+
 	const displayPokemons = pokemonsFromStore.displayedPokemons;
 
 	const dispatch = useDispatch();
@@ -33,8 +36,9 @@ export default function Home() {
 			<Filters />
 
 			{loading ? (
-				<h1>Loading...</h1>
+				<Loading />
 			) : (
+				// <h1>Loading...</h1>
 				<Pokemons
 					key={displayPokemons.id}
 					displayPokemons={
@@ -44,30 +48,8 @@ export default function Home() {
 					}
 				/>
 			)}
-			<div className="pagination">
-				{startPage === 1 ? (
-					""
-				) : (
-					<button onClick={() => dispatch(prevPage(page))}>
-						Previous
-					</button>
-				)}
 
-				{Array.from(
-					{ length: endPage - startPage + 1 },
-					(_, i) => startPage + i
-				).map((pageNumber) => (
-					<button
-						key={pageNumber}
-						onClick={() => dispatch(getPokemons(pageNumber))}
-						className={pageNumber === page ? "active" : ""}
-					>
-						{pageNumber}
-					</button>
-				))}
-
-				<button onClick={() => dispatch(nextPage(page))}>Next</button>
-			</div>
+			<Pagination startPage={startPage} endPage={endPage} page={page} />
 		</>
 	);
 }

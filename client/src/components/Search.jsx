@@ -12,6 +12,7 @@ export default function Search() {
 	}
 
 	async function dispatchFilterByName() {
+		if (search === "") return alert("Please enter a pokemon name");
 		try {
 			await dispatch(filterByName(search));
 			setSearch("");

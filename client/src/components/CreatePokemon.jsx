@@ -15,7 +15,7 @@ const initialState = {
 };
 
 const errorStyles = {
-	color: "red",
+	color: "#ff4742",
 	fontSize: "10px",
 };
 

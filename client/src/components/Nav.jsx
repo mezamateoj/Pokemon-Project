@@ -30,7 +30,7 @@ export default function Nav() {
 					<li>Create</li>
 				</NavLink>
 			</ul>
-			<ul>
+			{/* <ul>
 				<NavLink
 					to="/details"
 					style={{
@@ -42,7 +42,7 @@ export default function Nav() {
 				>
 					<li>Details</li>
 				</NavLink>
-			</ul>
+			</ul> */}
 		</div>
 	);
 }

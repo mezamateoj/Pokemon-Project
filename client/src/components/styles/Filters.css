@@ -8,17 +8,60 @@
 	width: 70%;
 	height: 98px;
 	/* background-color: #1e1e20; */
-	background-color: rgb(33, 33, 33);
+	/* background-color: rgb(33, 33, 33); */
+	background-color: #191919;
 	border-radius: 30px;
-	border: 5px solid rgba(255, 255, 255, 0.15);
+	/* border: 5px solid rgba(255, 255, 255, 0.15); */
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .filter-fieldset {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-wrap: wrap;
 	width: 100%;
 	height: 100%;
 	gap: 5px;
 	border-style: solid;
+	color: #fff;
+}
+
+.type-filter {
+	color: #fff;
+}
+
+.origin-filter {
+	color: #fff;
+}
+
+.filter-fieldset > select {
+	border-radius: 5px;
+	font-family: inherit;
+	width: 60px;
+	text-align: center;
+	padding: 5px 0;
+}
+
+.filter-fieldset > div > label {
+	text-transform: capitalize;
+}
+
+.type-select {
+	font-family: inherit;
+	border-radius: 5px;
+	text-transform: capitalize;
+	text-align: center;
+	padding: 5px 0;
+}
+
+.select-filters {
+	margin-top: 2px;
+}
+
+.select-filters > select {
+	border-radius: 5px;
+	font-family: inherit;
+	text-align: center;
+	padding: 5px 0;
 }

@@ -41,6 +41,11 @@ export default function pokemonReducer(state = initialPokemonState, action) {
                 ...state,
                 currentPage: action.payload
             }
+        case 'goToPage':
+            return {
+                ...state,
+                currentPage: action.payload
+            }
         case 'loading':
             return {
                 ...state,
@@ -216,17 +221,30 @@ export function resetFilters() {
     }
 }
 
-export function nextPage(currentPage) {
-    return {
-        type: 'nextPage',
-        payload: currentPage + 1
+export function nextPage() {
+    return (dispatch, getState) => {
+        const currentPage = getState().pokemons.currentPage
+        dispatch({
+            type: 'nextPage',
+            payload: currentPage + 1
+        })
     }
-
 }
 
-export function prevPage(currentPage) {
+export function prevPage() {
+    return (dispatch, getState) => {
+        const currentPage = getState().pokemons.currentPage
+        dispatch({
+            type: 'prevPage',
+            payload: currentPage - 1
+        })
+    }
+}
+
+
+export function goToPage(page) {
     return {
-        type: 'prevPage',
-        payload: currentPage - 1
+        type: 'goToPage',
+        payload: page
     }
 }

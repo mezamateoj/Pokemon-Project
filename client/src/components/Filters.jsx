@@ -39,6 +39,13 @@ export default function Filters() {
 
 	return (
 		<div className="filters">
+			{
+				<img
+					src="pokeball.png"
+					alt="pokeball"
+					style={{ width: "32px" }}
+				/>
+			}
 			<div className="order-filters">
 				<div className="select-filters">
 					<fieldset className="filter-fieldset">
@@ -79,7 +86,12 @@ export default function Filters() {
 			<div className="type-filter">
 				<label htmlFor="type">Types</label>
 				<div className="select-filters">
-					<select name="" id="" onChange={onSelectedType}>
+					<select
+						className="type-select"
+						name=""
+						id=""
+						onChange={onSelectedType}
+					>
 						{types.types?.map((type) => (
 							<option key={type.name} value={type.name}>
 								{type.name}
@@ -89,7 +101,7 @@ export default function Filters() {
 				</div>
 			</div>
 
-			<div className="origin-filters">
+			<div className="origin-filter">
 				<label htmlFor="origin">Origin</label>
 				<div className="select-filters">
 					<select name="" id="" onChange={handleOrigin}>

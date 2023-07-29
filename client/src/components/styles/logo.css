@@ -1,9 +1,11 @@
 .logo {
 	width: 100%;
-	text-align: center; /* added property */
-	height: 160px;
+	text-align: center;
+	height: 150px;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .logo-img {
-	width: 27%;
+	width: 25%;
 }

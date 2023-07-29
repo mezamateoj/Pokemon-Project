@@ -5,35 +5,49 @@ export default function LandingPage() {
 	return (
 		<div className="main">
 			<header className="title">
-				<h1>
-					Explore Pokemons!{" "}
-					{
-						<img
-							src="pokeball.png"
-							alt="pokeball"
-							style={{ width: "32px" }}
-						/>
-					}
-				</h1>
-				<p>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit.
-					Nostrum non nam velit sequi minima beatae quas, dolorem
-					similique voluptatum expedita culpa, itaque, quod accusamus
-					veritatis? Corporis vero soluta iste molestiae?
-				</p>
+				<div className="title-container">
+					<h1>
+						{
+							<img
+								src="pokeball.png"
+								alt="pokeball"
+								style={{ width: "32px" }}
+							/>
+						}{" "}
+						Explore Pokemons!{" "}
+						{
+							<img
+								src="pokeball.png"
+								alt="pokeball"
+								style={{ width: "32px" }}
+							/>
+						}
+					</h1>
+					<p>
+						Discover new pokemons on every page, check their stats
+						and create your own!
+					</p>
+				</div>
+				<div className="title-img">
+					<img
+						src="https://cdn.dribbble.com/userupload/4617910/file/original-b6b9810035b07189884357b0247190ce.png?resize=1200x900"
+						alt="pokemon dribble"
+						width="400px"
+					/>
+				</div>
 			</header>
 			<main className="context">
 				<h1>Start Exploring!</h1>
 				<p>
-					A website to easily explore all pokemons available and check
-					stats, even create your own one!
+					Filter them by type, origin, attack and name!<br></br> What
+					Pokemon would you like to discover today?
 				</p>
 				<NavLink
 					style={{ textDecoration: "none", cursor: "pointer" }}
 					className="start"
 					to="/home"
 				>
-					Start
+					Explore
 				</NavLink>
 				{/* <button>Start</button> */}
 			</main>
