@@ -5,9 +5,46 @@
 	justify-content: center;
 }
 
+.create-form > h1 {
+	margin-top: 8px;
+}
+
 .create-pokemon {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+	width: 50%;
+	background-color: #fff;
+	padding: 10px 0;
+	border-radius: 5rem;
+}
+
+.create-pokemon > button {
+	text-align: center;
+	line-height: 0px;
+	display: block;
+	margin: 0 auto;
+	outline: 0;
+	cursor: pointer;
+	border-radius: 6px;
+	border: 2px solid #ff4742;
+	color: #fff;
+	background-color: #ff4742;
+	padding: 10px;
+	box-shadow: rgba(0, 0, 0, 0.07) 0px 2px 4px 0px,
+		rgba(0, 0, 0, 0.05) 0px 1px 1.5px 0px;
+	font-weight: bold;
+	font-family: inherit;
+	font-size: 16px;
+	height: 2rem;
+}
+
+.create-pokemon > button[enabled]:hover {
+	background: 0 0;
+	color: #ff4742;
+}
+
+.create-pokemon > button:disabled {
+	background: 0 0;
+	border: #61677a;
+	background-color: #61677a;
+	text-decoration: line-through;
+	cursor: not-allowed;
 }

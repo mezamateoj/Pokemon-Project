@@ -6,7 +6,7 @@ import {
 } from "../redux/pokemonsSlice";
 import "./styles/Filters.css";
 import { useState } from "react";
-import { filterByAttack, filterNameAscDsc } from "../redux/pokemonsSlice";
+import { filterByAttack, orderByName } from "../redux/pokemonsSlice";
 
 export default function Filters() {
 	const [filter, setFilter] = useState(""); // ["attack", "name"
@@ -33,7 +33,7 @@ export default function Filters() {
 		} else if (filter === "name") {
 			console.log(e.target.value);
 
-			dispatch(filterNameAscDsc(e.target.value));
+			dispatch(orderByName(e.target.value));
 		}
 	}
 
@@ -77,8 +77,8 @@ export default function Filters() {
 							id=""
 							onChange={handleFilterByAttackorName}
 						>
-							<option value="A-Z">A-Z</option>
-							<option value="Z-A">Z-A</option>
+							<option value="asc">asc</option>
+							<option value="desc">desc</option>
 						</select>
 					</fieldset>
 				</div>

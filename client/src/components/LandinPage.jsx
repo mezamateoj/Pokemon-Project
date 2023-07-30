@@ -30,7 +30,7 @@ export default function LandingPage() {
 				</div>
 				<div className="title-img">
 					<img
-						src="https://cdn.dribbble.com/userupload/4617910/file/original-b6b9810035b07189884357b0247190ce.png?resize=1200x900"
+						src="./poke-img.webp"
 						alt="pokemon dribble"
 						width="400px"
 					/>

@@ -104,38 +104,19 @@ export default function pokemonReducer(state = initialPokemonState, action) {
             }
 
         case 'filterByAttack':
-            if (action.payload === 'A-Z') {
-                return {
-                    ...state,
-                    displayedPokemons: state.pokemons.flat().sort((a, b) => a.attack - b.attack),
-                    loading: false
-                }
+            return {
+                ...state,
+                displayedPokemons: action.payload,
+                loading: false
             }
-            if (action.payload === 'Z-A') {
-                return {
-                    ...state,
-                    displayedPokemons: state.pokemons.flat().sort((a, b) => b.attack - a.attack),
-                    loading: false
-                }
-            }
-            break;
 
-        case 'filterNameAscDsc':
-            if (action.payload === 'A-Z') {
-                return {
-                    ...state,
-                    displayedPokemons: state.pokemons.flat().sort((a, b) => a.name.localeCompare(b.name)),
-                    loading: false
-                }
+        case 'orderByName':
+            return {
+                ...state,
+                displayedPokemons: action.payload,
+                loading: false
             }
-            if (action.payload === 'Z-A') {
-                return {
-                    ...state,
-                    displayedPokemons: state.pokemons.flat().sort((a, b) => b.name.localeCompare(a.name)),
-                    loading: false
-                }
-            }
-            break;
+
 
         case 'switchLoading':
             return {
@@ -186,6 +167,27 @@ export function createPokemon(pokemon) {
     }
 }
 
+export function filterByAttack(order) {
+    return async function filterByAttackThunk(dispatch) {
+        dispatch({ type: 'loading' })
+
+        const response = await axios.get(`http://localhost:3001/attacks/${order}`);
+
+        dispatch({ type: 'filterByAttack', payload: response.data })
+    }
+}
+
+
+export function orderByName(order) {
+    return async function filterByNameThunk(dispatch) {
+        dispatch({ type: 'loading' })
+
+        const response = await axios.get(`http://localhost:3001/names/${order}`);
+
+        dispatch({ type: 'orderByName', payload: response.data })
+    }
+}
+
 export function filterByType(type) {
     return {
         type: 'filterByType',
@@ -200,12 +202,12 @@ export function filterByOrigin(origin) {
     }
 }
 
-export function filterByAttack(attack) {
-    return {
-        type: 'filterByAttack',
-        payload: attack
-    }
-}
+// export function filterByAttack(attack) {
+//     return {
+//         type: 'filterByAttack',
+//         payload: attack
+//     }
+// }
 
 export function filterNameAscDsc(name) {
     return {

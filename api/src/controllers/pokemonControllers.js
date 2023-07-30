@@ -162,7 +162,6 @@ const getPokemonByName = async (req, res) => {
 
 
 const getPokemonByID = async (req, res) => {
-    console.log(req.params)
     const { id } = req.params;
     try {
         if (id) {
@@ -243,6 +242,38 @@ const createPokemon = async (req, res) => {
     }
 }
 
+const sortByAttack = async (req, res) => {
+    const { order } = req.params
+    const filterOrder = order === 'desc' ? 'DESC' : 'ASC';
+    try {
+        const pokemons = await Pokemon.findAll({
+            order: [['attack', filterOrder]],
+            include: typeResponse['include']
+        });
+        return res.status(200).json(pokemons)
+
+    } catch (error) {
+        return res.status(400).json({ error: error.message })
+
+    }
+}
+
+const SortByName = async (req, res) => {
+    const { order } = req.params
+    const filterOrder = order === 'desc' ? 'DESC' : 'ASC';
+    try {
+        const pokemons = await Pokemon.findAll({
+            order: [['name', filterOrder]],
+            include: typeResponse['include']
+        });
+        return res.status(200).json(pokemons)
+
+    } catch (error) {
+        return res.status(400).json({ error: error.message })
+
+    }
+}
+
 
 module.exports = {
     checkID,
@@ -250,6 +281,8 @@ module.exports = {
     getPokemonByName,
     getAllPokemons,
     getPokemonByID,
-    createPokemon
+    createPokemon,
+    sortByAttack,
+    SortByName
 
 }

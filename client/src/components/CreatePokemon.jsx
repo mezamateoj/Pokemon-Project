@@ -1,8 +1,9 @@
 import "./styles/CreatePokemon.css";
 import { useState } from "react";
 import validation from "./validation";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createPokemon } from "../redux/pokemonsSlice";
+import FormInput from "./FormInput";
 
 const initialState = {
 	name: "",
@@ -14,21 +15,44 @@ const initialState = {
 	types: [],
 };
 
-const errorStyles = {
-	color: "#ff4742",
-	fontSize: "10px",
-};
+const inputs = [
+	{ id: 1, name: "name", placeholder: "Name", label: "Name", error: "" },
+	{ id: 2, name: "image", placeholder: "Image", label: "Image", error: "" },
+	{
+		id: 3,
+		name: "health",
+		placeholder: "Health",
+		label: "Health",
+		error: "",
+	},
+	{
+		id: 4,
+		name: "attack",
+		placeholder: "Attack",
+		label: "Attack",
+		error: "",
+	},
+	{
+		id: 5,
+		name: "defense",
+		placeholder: "Defense",
+		label: "Defense",
+		error: "",
+	},
+	{ id: 6, name: "speed", placeholder: "Speed", label: "Speed", error: "" },
+	{ id: 7, name: "types", placeholder: "Types", label: "Types", error: "" },
+];
 
 export default function CreatePokemon() {
 	const [formPokemon, setFormPokemon] = useState(initialState);
-	const [errors, setErrors] = useState(initialState);
+	const [errors, setErrors] = useState(false);
 
 	const dispatch = useDispatch();
 
 	async function handleSubmit(e) {
 		e.preventDefault();
 		try {
-			await dispatch(createPokemon(formPokemon));
+			dispatch(createPokemon(formPokemon));
 			setFormPokemon(initialState);
 			setErrors(initialState);
 		} catch (error) {
@@ -48,12 +72,14 @@ export default function CreatePokemon() {
 	}
 
 	function handleBlur(e) {
-		setErrors(
-			validation({
-				...formPokemon,
-				[e.target.name]: e.target.value,
-			})
-		);
+		const { name, value } = e.target;
+		const fieldErrors = validation(name, value);
+
+		// Combine new error with existing errors
+		setErrors((prevErrors) => ({
+			...prevErrors,
+			...fieldErrors,
+		}));
 	}
 
 	function isFormIncomplete() {
@@ -66,99 +92,16 @@ export default function CreatePokemon() {
 		<div className="create-form">
 			<h1>Create Pokemon</h1>
 			<form className="create-pokemon" onSubmit={handleSubmit}>
-				<label htmlFor="name">Name</label>
-				<input
-					type="text"
-					name="name"
-					value={formPokemon.name}
-					onChange={onChange}
-					onBlur={handleBlur}
-				/>
-				{errors.name && (
-					<p style={errorStyles} className="error">
-						{errors.name}
-					</p>
-				)}
-
-				<label htmlFor="image">Image</label>
-				<input
-					type="text"
-					name="image"
-					value={formPokemon.image}
-					onChange={onChange}
-					onBlur={handleBlur}
-				/>
-				{errors.image && (
-					<p style={errorStyles} className="error">
-						{errors.image}
-					</p>
-				)}
-
-				<label htmlFor="health">health</label>
-				<input
-					type="text"
-					name="health"
-					value={formPokemon.health}
-					onChange={onChange}
-					onBlur={handleBlur}
-				/>
-				{errors.health && (
-					<p style={errorStyles} className="error">
-						{errors.health}
-					</p>
-				)}
-
-				<label htmlFor="attack">attack</label>
-				<input
-					type="text"
-					name="attack"
-					value={formPokemon.attack}
-					onChange={onChange}
-					onBlur={handleBlur}
-				/>
-				{errors.attack && (
-					<p style={errorStyles} className="error">
-						{errors.attack}
-					</p>
-				)}
-
-				<label htmlFor="defense">defense</label>
-				<input
-					type="text"
-					name="defense"
-					value={formPokemon.defense}
-					onChange={onChange}
-					onBlur={handleBlur}
-				/>
-				{errors.defense && (
-					<p style={errorStyles} className="error">
-						{errors.defense}
-					</p>
-				)}
-
-				<label htmlFor="speed">speed</label>
-				<input
-					type="text"
-					name="speed"
-					value={formPokemon.speed}
-					onChange={onChange}
-					onBlur={handleBlur}
-				/>
-				{errors.speed && (
-					<p style={errorStyles} className="error">
-						{errors.speed}
-					</p>
-				)}
-
-				<label htmlFor="types">types</label>
-				<input
-					type="text"
-					name="types"
-					placeholder="grass, water, etc"
-					value={formPokemon.types}
-					onChange={onChange}
-				/>
-
+				{inputs.map((input) => (
+					<FormInput
+						key={input.id}
+						{...input}
+						value={formPokemon[input.name]}
+						onChange={onChange}
+						onBlur={handleBlur}
+						error={errors[input.name]}
+					/>
+				))}
 				<button disabled={isFormIncomplete()}>Create</button>
 			</form>
 		</div>

@@ -1,7 +1,9 @@
 const { Router } = require('express');
 const router = Router();
 const getAllTypes = require('../controllers/typesControllers')
-const { getPokemonByName, checkBody, checkID, getAllPokemons, getPokemonByID, createPokemon } = require('../controllers/pokemonControllers')
+const { getPokemonByName, checkBody, checkID,
+    getAllPokemons, getPokemonByID, createPokemon,
+    sortByAttack, SortByName } = require('../controllers/pokemonControllers')
 
 router.param('id', checkID);
 
@@ -17,6 +19,14 @@ router
 router
     .route('/pokemons/:id')
     .get(getPokemonByID)
+
+router
+    .route('/attacks/:order')
+    .get(sortByAttack)
+
+router
+    .route('/names/:order')
+    .get(SortByName)
 
 
 router
