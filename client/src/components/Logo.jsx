@@ -7,12 +7,16 @@ export default function Logo() {
 			to="/"
 			style={{
 				textDecoration: "none",
-
 				cursor: "pointer",
 			}}
 		>
 			<div className="logo">
-				<img className="logo-img" src="pokemon-logo.png" alt="logo" />
+				<img
+					className="logo-img"
+					src="pokemon-logo.png"
+					alt="logo"
+					style={{ margin: "0 0 10px 0" }}
+				/>
 			</div>
 		</NavLink>
 	);

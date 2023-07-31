@@ -27,7 +27,6 @@ function App() {
         <Route path="/create" element={<CreatePokemon />} />
         <Route path="/details/:id" element={<Details />} />
       </Routes>
-      <Footer />
     </div>
   );
 }

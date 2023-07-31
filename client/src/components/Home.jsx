@@ -8,6 +8,7 @@ import { getAllPokemons } from "../redux/thunks/thunks";
 import Filters from "./Filters";
 import Pagination from "./Pagination";
 import Loading from "./Loading";
+import Footer from "./Footer";
 
 export default function Home() {
 	const dispatch = useDispatch();
@@ -26,7 +27,7 @@ export default function Home() {
 		dispatch(getAllPokemons(page));
 		setStartPage(page);
 		setEndPage(page + 3);
-	}, [page]); //  I've added the page variable as a dependency to useEffect. This means that useEffect will be triggered each time the page state changes.
+	}, [page, dispatch]); //  I've added the page variable as a dependency to useEffect. This means that useEffect will be triggered each time the page state changes.
 
 	return (
 		<>
@@ -49,6 +50,7 @@ export default function Home() {
 			)}
 
 			<Pagination startPage={startPage} endPage={endPage} page={page} />
+			<Footer />
 		</>
 	);
 }

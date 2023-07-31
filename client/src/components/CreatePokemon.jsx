@@ -4,6 +4,7 @@ import validation from "./validation";
 import { useDispatch } from "react-redux";
 import { createPokemon } from "../redux/thunks/thunks";
 import FormInput from "./FormInput";
+import CreateImage from "./CreateImage";
 
 const initialState = {
 	name: "",
@@ -17,7 +18,13 @@ const initialState = {
 
 const inputs = [
 	{ id: 1, name: "name", placeholder: "Name", label: "Name", error: "" },
-	{ id: 2, name: "image", placeholder: "Image", label: "Image", error: "" },
+	{
+		id: 2,
+		name: "image",
+		placeholder: "Image",
+		label: "Image Url",
+		error: "",
+	},
 	{
 		id: 3,
 		name: "health",
@@ -46,6 +53,9 @@ const inputs = [
 export default function CreatePokemon() {
 	const [formPokemon, setFormPokemon] = useState(initialState);
 	const [errors, setErrors] = useState(false);
+	// state for image creation component
+	const [prompt, setPrompt] = useState("");
+	const [image, setImage] = useState("");
 
 	const dispatch = useDispatch();
 
@@ -55,6 +65,9 @@ export default function CreatePokemon() {
 			dispatch(createPokemon(formPokemon));
 			setFormPokemon(initialState);
 			setErrors(initialState);
+			setPrompt("");
+			setImage("");
+			alert("Pokemon created successfully!");
 		} catch (error) {
 			alert(error.response.data.error);
 		}
@@ -89,21 +102,31 @@ export default function CreatePokemon() {
 	}
 
 	return (
-		<div className="create-form">
-			<h1>😀 Create Pokemon 😀</h1>
-			<form className="create-pokemon" onSubmit={handleSubmit}>
-				{inputs.map((input) => (
-					<FormInput
-						key={input.id}
-						{...input}
-						value={formPokemon[input.name]}
-						onChange={onChange}
-						onBlur={handleBlur}
-						error={errors[input.name]}
-					/>
-				))}
-				<button disabled={isFormIncomplete()}>Create</button>
-			</form>
+		<div className="create-container">
+			<div className="create-form">
+				<h1>😀 Create Pokemon 😀</h1>
+				<form className="create-pokemon" onSubmit={handleSubmit}>
+					{inputs.map((input) => (
+						<FormInput
+							key={input.id}
+							{...input}
+							value={formPokemon[input.name]}
+							onChange={onChange}
+							onBlur={handleBlur}
+							error={errors[input.name]}
+						/>
+					))}
+					<button disabled={isFormIncomplete()}>Create</button>
+				</form>
+			</div>
+			<div className="dalle">
+				<CreateImage
+					image={image}
+					setImage={setImage}
+					prompt={prompt}
+					setPrompt={setPrompt}
+				/>
+			</div>
 		</div>
 	);
 }

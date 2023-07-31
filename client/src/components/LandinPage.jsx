@@ -32,7 +32,7 @@ export default function LandingPage() {
 					<img
 						src="./poke-img.webp"
 						alt="pokemon dribble"
-						width="400px"
+						width="350px"
 					/>
 				</div>
 			</header>

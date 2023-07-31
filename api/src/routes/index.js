@@ -3,7 +3,7 @@ const router = Router();
 const getAllTypes = require('../controllers/typesControllers')
 const { getPokemonByName, checkBody, checkID,
     getAllPokemons, getPokemonByID, createPokemon,
-    sortByAttack, SortByName, filterByOrigin } = require('../controllers/pokemonControllers')
+    sortByAttack, SortByName, filterByOrigin, createImage } = require('../controllers/pokemonControllers')
 
 router.param('id', checkID);
 
@@ -36,6 +36,10 @@ router
     .route('/types')
     .get(getAllTypes)
 
+// route to create images using Dall-E
+router
+    .route('/images')
+    .post(createImage)
 
 
 module.exports = router;

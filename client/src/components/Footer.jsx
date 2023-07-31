@@ -26,7 +26,7 @@ export default function Footer() {
 				</a>
 			</div>
 			<div className="made">
-				<h4>Made with ❤️by Mateo Meza</h4>
+				<h4 style={{ color: "#495057" }}>Made with ❤️ by Mateo Meza</h4>
 			</div>
 		</footer>
 	);
