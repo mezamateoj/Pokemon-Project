@@ -2,7 +2,7 @@ import "./styles/CreatePokemon.css";
 import { useState } from "react";
 import validation from "./validation";
 import { useDispatch } from "react-redux";
-import { createPokemon } from "../redux/pokemonsSlice";
+import { createPokemon } from "../redux/thunks/thunks";
 import FormInput from "./FormInput";
 
 const initialState = {
@@ -90,7 +90,7 @@ export default function CreatePokemon() {
 
 	return (
 		<div className="create-form">
-			<h1>Create Pokemon</h1>
+			<h1>😀 Create Pokemon 😀</h1>
 			<form className="create-pokemon" onSubmit={handleSubmit}>
 				{inputs.map((input) => (
 					<FormInput

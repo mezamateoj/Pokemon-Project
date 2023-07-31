@@ -1,0 +1,24 @@
+.pagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 8%;
+	gap: 6px;
+}
+
+.pagination > span {
+	color: #fff;
+}
+
+.pagination > .active {
+	color: #fff;
+	background-color: #007bff;
+	border-color: #007bff;
+}
+
+.pagination > button {
+	border-radius: 5px;
+	padding: 5px 10px;
+	font-family: inherit;
+	cursor: pointer;
+}

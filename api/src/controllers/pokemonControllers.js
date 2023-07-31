@@ -1,5 +1,7 @@
 const axios = require('axios');
 const { Pokemon, Type } = require('../db');
+const { Op } = require("sequelize");
+
 
 const typeResponse = {
     include: [
@@ -132,7 +134,7 @@ const getPokemonByName = async (req, res) => {
                 if (response.status !== 200) {
                     throw Error(`Pokemon named: ${name} not found`)
                 }
-                x
+
                 pokemon = response.data
 
                 const newPokemon = {
@@ -275,6 +277,29 @@ const SortByName = async (req, res) => {
 }
 
 
+const filterByOrigin = async (req, res) => {
+    const { origin } = req.params
+    const filterOrigin = origin === 'API' ? true : false;
+
+    try {
+        const pokemons = await Pokemon.findAll({
+            where: filterOrigin ? { apiId: { [Op.not]: null } } : { apiId: null },
+            include: typeResponse['include']
+        });
+        if (pokemons.length === 0) {
+            throw Error(`No pokemons found with origin: ${origin}`)
+        }
+        return res.status(200).json(pokemons)
+
+    } catch (error) {
+        return res.status(400).json({ error: error.message })
+
+    }
+}
+
+
+
+
 module.exports = {
     checkID,
     checkBody,
@@ -283,6 +308,7 @@ module.exports = {
     getPokemonByID,
     createPokemon,
     sortByAttack,
-    SortByName
+    SortByName,
+    filterByOrigin
 
 }

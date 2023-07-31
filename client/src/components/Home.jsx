@@ -4,12 +4,14 @@ import Pokemons from "./Pokemons";
 import "./styles/Home.css";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPokemons } from "../redux/pokemonsSlice";
+import { getAllPokemons } from "../redux/thunks/thunks";
 import Filters from "./Filters";
 import Pagination from "./Pagination";
 import Loading from "./Loading";
 
 export default function Home() {
+	const dispatch = useDispatch();
+
 	const page = useSelector((store) => store.pokemons.currentPage);
 	const [startPage, setStartPage] = useState(page);
 	const [endPage, setEndPage] = useState(page + 1); // showing five pages at a time
@@ -18,16 +20,13 @@ export default function Home() {
 	console.log(pokemonsFromStore);
 
 	const loading = pokemonsFromStore.loading;
-
 	const displayPokemons = pokemonsFromStore.displayedPokemons;
 
-	const dispatch = useDispatch();
-
 	useEffect(() => {
-		dispatch(getPokemons(page));
+		dispatch(getAllPokemons(page));
 		setStartPage(page);
 		setEndPage(page + 3);
-	}, [page, dispatch]); //  I've added the page variable as a dependency to useEffect. This means that useEffect will be triggered each time the page state changes.
+	}, [page]); //  I've added the page variable as a dependency to useEffect. This means that useEffect will be triggered each time the page state changes.
 
 	return (
 		<>

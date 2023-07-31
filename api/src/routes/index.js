@@ -3,7 +3,7 @@ const router = Router();
 const getAllTypes = require('../controllers/typesControllers')
 const { getPokemonByName, checkBody, checkID,
     getAllPokemons, getPokemonByID, createPokemon,
-    sortByAttack, SortByName } = require('../controllers/pokemonControllers')
+    sortByAttack, SortByName, filterByOrigin } = require('../controllers/pokemonControllers')
 
 router.param('id', checkID);
 
@@ -28,6 +28,9 @@ router
     .route('/names/:order')
     .get(SortByName)
 
+router
+    .route('/origin/:origin')
+    .get(filterByOrigin)
 
 router
     .route('/types')

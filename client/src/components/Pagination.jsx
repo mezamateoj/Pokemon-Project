@@ -1,21 +1,59 @@
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { goToPage, nextPage, prevPage } from "../redux/pokemonsSlice";
+import { goToPage, nextPage, prevPage } from "../redux/actions/actions";
+import "./styles/Pagination.css";
 
-export default function Pagination({ startPage, endPage, page }) {
+export default function Pagination({ page }) {
+	const [moreNumbers, setMoreNumbers] = useState(50);
+	const [lessNumbers, setLessNumbers] = useState(page);
+
 	const dispatch = useDispatch();
+
+	const totalPage = 106;
+	// calculate start and end item indexes
+	let startItem = Math.max(page - 2, 1);
+	let endItem = startItem + 4;
+
+	// ensure that the end item does not exceed the total number of pages
+	if (endItem > totalPage) {
+		endItem = totalPage;
+		startItem = Math.max(endItem - 4, 1);
+	}
+
+	// create an array from start to end
+	const pageNumbers = [...Array(endItem + 1).keys()].slice(startItem);
+
+	function handleMoreNumbers() {
+		if (moreNumbers > 100) return;
+		dispatch(goToPage(moreNumbers));
+		setMoreNumbers(moreNumbers + 25);
+	}
+
+	function handleNextPage() {
+		dispatch(nextPage());
+		setLessNumbers(page - 4);
+	}
+
+	function handleLessNumbers() {
+		if (page < 5) return;
+		dispatch(goToPage(lessNumbers));
+	}
 
 	return (
 		<div className="pagination">
-			{startPage === 1 ? (
+			{page < 5 || lessNumbers < 1 ? (
 				""
 			) : (
-				<button onClick={() => dispatch(prevPage())}>Previous</button>
+				<>
+					<button onClick={handleLessNumbers}>{lessNumbers}</button>
+					<span>..</span>
+				</>
 			)}
 
-			{Array.from(
-				{ length: endPage - startPage + 1 },
-				(_, i) => startPage + i
-			).map((pageNumber) => (
+			{page !== 1 && (
+				<button onClick={() => dispatch(prevPage())}>Previous</button>
+			)}
+			{pageNumbers.map((pageNumber) => (
 				<button
 					key={pageNumber}
 					onClick={() => dispatch(goToPage(pageNumber))}
@@ -25,7 +63,17 @@ export default function Pagination({ startPage, endPage, page }) {
 				</button>
 			))}
 
-			<button onClick={() => dispatch(nextPage())}>Next</button>
+			{page !== totalPage && (
+				<button onClick={handleNextPage}>Next</button>
+			)}
+			{moreNumbers > 100 ? (
+				""
+			) : (
+				<>
+					<span>..</span>
+					<button onClick={handleMoreNumbers}>{moreNumbers}</button>
+				</>
+			)}
 		</div>
 	);
 }

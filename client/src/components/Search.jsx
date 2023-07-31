@@ -1,7 +1,7 @@
 import "./styles/search.css";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { filterByName } from "../redux/pokemonsSlice";
+import { filterByName } from "../redux/thunks/thunks";
 
 export default function Search() {
 	const [search, setSearch] = useState("");
@@ -17,6 +17,7 @@ export default function Search() {
 			await dispatch(filterByName(search));
 			setSearch("");
 		} catch (error) {
+			console.log(error);
 			alert(`Pokemon: ${error.response.data.message}`);
 		}
 	}

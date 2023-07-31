@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
-import {
-	filterByType,
-	resetFilters,
-	filterByOrigin,
-} from "../redux/pokemonsSlice";
+
+import { filterByType, resetFilters } from "../redux/actions/actions";
 import "./styles/Filters.css";
 import { useState } from "react";
-import { filterByAttack, orderByName } from "../redux/pokemonsSlice";
+import {
+	filterByAttack,
+	orderByName,
+	filterByOrigin,
+} from "../redux/thunks/thunks";
 
 export default function Filters() {
 	const [filter, setFilter] = useState(""); // ["attack", "name"
@@ -18,8 +19,14 @@ export default function Filters() {
 		dispatch(filterByType(e.target.value));
 	}
 
-	function handleOrigin(e) {
-		dispatch(filterByOrigin(e.target.value));
+	async function handleOrigin(e) {
+		try {
+			console.log(e.target.value);
+			dispatch(filterByOrigin(e.target.value));
+		} catch (error) {
+			console.log(error.response.data);
+			alert(error.response.data.error);
+		}
 	}
 
 	function handleReset() {

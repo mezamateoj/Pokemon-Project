@@ -1,4 +1,5 @@
-import axios from "axios";
+
+
 const initialPokemonState = {
     pokemons: [],
     displayedPokemons: [],
@@ -76,25 +77,13 @@ export default function pokemonReducer(state = initialPokemonState, action) {
                 displayedPokemons: filteredByType,
                 loading: false
             }
-        case 'filterByOrigin':
+        case 'orderByOrigin':
+            return {
+                ...state,
+                displayedPokemons: action.payload,
+                loading: false
+            }
 
-            // console.log(state.pokemons.flat())
-            // console.log(state.pokemons.flat().filter(p => p.apiId === null))
-            if (action.payload === 'Created') {
-                return {
-                    ...state,
-                    displayedPokemons: state.pokemons.flat().filter(p => p.apiId === null),
-                    loading: false
-                }
-            }
-            if (action.payload === 'API') {
-                return {
-                    ...state,
-                    displayedPokemons: state.pokemons.flat().filter(p => p.apiId !== null).slice(-12),
-                    loading: false
-                }
-            }
-            break;
         case 'resetFilters':
             const resetFilters = state.pokemons.flat().filter(p => p.apiId !== null)
 
@@ -126,127 +115,5 @@ export default function pokemonReducer(state = initialPokemonState, action) {
 
         default:
             return state;
-    }
-}
-
-export function getPokemons(page) {
-    return async function getPokemonsThunk(dispatch) {
-
-        dispatch({ type: 'loading' })
-
-        const response = await axios.get(`http://localhost:3001/pokemons?page=${page}&limit=12`);
-        const currentPage = response.data.currentPage
-        dispatch({ type: 'GET_POKEMONS', payload: { pokemons: response.data.pokemons, currentPage: currentPage } })
-    }
-}
-
-export function filterByName(name) {
-    return async function filterByNameThunk(dispatch) {
-        dispatch({ type: 'loading' })
-
-        try {
-            const response = await axios.get(`http://localhost:3001/pokemons/name?name=${name}`);
-            dispatch({ type: 'filterByName', payload: [response.data] })
-            console.log(response.data)
-
-        } catch (error) {
-            dispatch({ type: 'switchLoading' })
-            throw (error);
-        }
-
-    }
-}
-
-export function createPokemon(pokemon) {
-    return async function createPokemonThunk(dispatch) {
-        dispatch({ type: 'loading' })
-
-        const response = await axios.post('http://localhost:3001/pokemons', pokemon);
-
-        dispatch({ type: 'CREATE_POKEMON', payload: response.data })
-    }
-}
-
-export function filterByAttack(order) {
-    return async function filterByAttackThunk(dispatch) {
-        dispatch({ type: 'loading' })
-
-        const response = await axios.get(`http://localhost:3001/attacks/${order}`);
-
-        dispatch({ type: 'filterByAttack', payload: response.data })
-    }
-}
-
-
-export function orderByName(order) {
-    return async function filterByNameThunk(dispatch) {
-        dispatch({ type: 'loading' })
-
-        const response = await axios.get(`http://localhost:3001/names/${order}`);
-
-        dispatch({ type: 'orderByName', payload: response.data })
-    }
-}
-
-export function filterByType(type) {
-    return {
-        type: 'filterByType',
-        payload: type
-    }
-}
-
-export function filterByOrigin(origin) {
-    return {
-        type: 'filterByOrigin',
-        payload: origin
-    }
-}
-
-// export function filterByAttack(attack) {
-//     return {
-//         type: 'filterByAttack',
-//         payload: attack
-//     }
-// }
-
-export function filterNameAscDsc(name) {
-    return {
-        type: 'filterNameAscDsc',
-        payload: name
-    }
-}
-
-
-export function resetFilters() {
-    return {
-        type: 'resetFilters'
-    }
-}
-
-export function nextPage() {
-    return (dispatch, getState) => {
-        const currentPage = getState().pokemons.currentPage
-        dispatch({
-            type: 'nextPage',
-            payload: currentPage + 1
-        })
-    }
-}
-
-export function prevPage() {
-    return (dispatch, getState) => {
-        const currentPage = getState().pokemons.currentPage
-        dispatch({
-            type: 'prevPage',
-            payload: currentPage - 1
-        })
-    }
-}
-
-
-export function goToPage(page) {
-    return {
-        type: 'goToPage',
-        payload: page
     }
 }
