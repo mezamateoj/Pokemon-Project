@@ -22,6 +22,7 @@ export default function Home() {
 
 	const loading = pokemonsFromStore.loading;
 	const displayPokemons = pokemonsFromStore.displayedPokemons;
+	const currentPage = pokemonsFromStore.currentPage;
 
 	useEffect(() => {
 		dispatch(getAllPokemons(page));
@@ -49,7 +50,12 @@ export default function Home() {
 				/>
 			)}
 
-			<Pagination startPage={startPage} endPage={endPage} page={page} />
+			<Pagination
+				startPage={startPage}
+				endPage={endPage}
+				page={page}
+				currentPage={currentPage}
+			/>
 			<Footer />
 		</>
 	);

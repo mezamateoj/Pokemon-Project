@@ -3,9 +3,9 @@ import { useDispatch } from "react-redux";
 import { goToPage, nextPage, prevPage } from "../redux/actions/actions";
 import "./styles/Pagination.css";
 
-export default function Pagination({ page }) {
+export default function Pagination({ page, currentPage }) {
 	const [moreNumbers, setMoreNumbers] = useState(50);
-	const [lessNumbers, setLessNumbers] = useState(page);
+	const [lessNumbers, setLessNumbers] = useState(currentPage - 4);
 
 	const dispatch = useDispatch();
 
@@ -35,7 +35,7 @@ export default function Pagination({ page }) {
 	}
 
 	function handleLessNumbers() {
-		if (page < 5) return;
+		if (currentPage < 5) return;
 		dispatch(goToPage(lessNumbers));
 	}
 

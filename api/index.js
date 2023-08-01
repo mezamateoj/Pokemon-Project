@@ -1,10 +1,11 @@
+require('dotenv').config();
 const server = require('./src/app.js');
 const { conn } = require('./src/db.js');
-PORT = 3001;
+PORT = process.env.PORT || 3001;
 
 
 // Syncing all the models at once.
-conn.sync({ force: true }).then(() => {
+conn.sync({ force: false }).then(() => {
   server.listen(PORT, () => {
     console.log(`Server listening on port: ${PORT}`)
   });
