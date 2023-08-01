@@ -17,7 +17,7 @@ export default function typesReducer(state = initialTypes, action) {
 
 export function getTypes() {
     return async function getTypesThunk(dispatch) {
-        const response = await axios.get(`http://localhost:3001/types`);
+        const response = await axios.get(`/types`);
         dispatch({ type: 'GET_TYPES', payload: response.data })
     }
 }
