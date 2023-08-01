@@ -3,7 +3,6 @@ import Nav from './components/Nav';
 import LandingPage from './components/LandinPage';
 import { Routes, Route } from "react-router-dom";
 import Home from './components/Home';
-import Footer from './components/Footer';
 import CreatePokemon from './components/CreatePokemon';
 import Details from './components/Details';
 import { useEffect } from 'react';

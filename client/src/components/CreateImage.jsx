@@ -10,7 +10,7 @@ function CreateImage({ prompt, setPrompt, image, setImage }) {
 		try {
 			if (prompt === "") return alert("Please enter a prompt");
 			setLoading(true);
-			const res = await axios.post(`http://localhost:3001/images`, {
+			const res = await axios.post(`/images`, {
 				prompt: prompt,
 			});
 			console.log(res.data);

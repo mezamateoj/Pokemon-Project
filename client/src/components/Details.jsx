@@ -15,7 +15,7 @@ export default function Details() {
 		try {
 			setLoading(true);
 
-			const res = await axios.get(`http://localhost:3001/pokemons/${id}`);
+			const res = await axios.get(`/pokemons/${id}`);
 			console.log(res.data);
 			setDetails(res.data);
 			setLoading(false);
