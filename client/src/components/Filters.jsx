@@ -1,13 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import { filterByType, resetFilters } from "../redux/actions/actions";
+import {
+	filterByType,
+	resetFilters,
+	orderByName,
+	orderByOrigin,
+	filterByAttack,
+} from "../redux/actions/actions";
 import "./styles/Filters.css";
 import { useState } from "react";
-import {
-	filterByAttack,
-	orderByName,
-	filterByOrigin,
-} from "../redux/thunks/thunks";
+// import { , filterByOrigin } from "../redux/thunks/thunks";
 
 export default function Filters() {
 	const [filter, setFilter] = useState(""); // ["attack", "name"
@@ -20,7 +22,7 @@ export default function Filters() {
 
 	async function handleOrigin(e) {
 		try {
-			await dispatch(filterByOrigin(e.target.value));
+			await dispatch(orderByOrigin(e.target.value));
 		} catch (error) {
 			console.log(error);
 			alert(error.response.data.error);

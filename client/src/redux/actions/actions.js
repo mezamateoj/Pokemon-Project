@@ -12,9 +12,30 @@ export function resetFilters() {
     }
 }
 
+export function orderByName(name) {
+    return {
+        type: 'orderByName',
+        payload: name
+    }
+}
+
+export function filterByAttack(attack) {
+    return {
+        type: 'orderByName',
+        payload: attack
+    }
+}
+
+export function orderByOrigin(origin) {
+    return {
+        type: 'orderByOrigin',
+        payload: origin
+    }
+}
+
 export function nextPage() {
     return (dispatch, getState) => {
-        const currentPage = getState().pokemons.currentPage
+        const currentPage = getState().displayedPokemons.currentPage
         dispatch({
             type: 'nextPage',
             payload: currentPage + 1
@@ -24,7 +45,7 @@ export function nextPage() {
 
 export function prevPage() {
     return (dispatch, getState) => {
-        const currentPage = getState().pokemons.currentPage
+        const currentPage = getState().displayedPokemons.currentPage
         dispatch({
             type: 'prevPage',
             payload: currentPage - 1

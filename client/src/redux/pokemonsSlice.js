@@ -1,11 +1,13 @@
 
 
 const initialPokemonState = {
+    originalPokemons: [],
     pokemons: [],
     displayedPokemons: [],
     createdPokemons: [],
     loading: false,
-    currentPage: 1
+    currentPage: 1,
+
 }
 
 export default function pokemonReducer(state = initialPokemonState, action) {
@@ -17,11 +19,12 @@ export default function pokemonReducer(state = initialPokemonState, action) {
             // Only add pokemons that don't already exist in the state
             const newPokemons = action.payload.pokemons.filter(pokemon => !existingIds.has(pokemon.id));
 
-            const updatedPokemons = [...state.pokemons, ...action.payload.pokemons];
+            // const updatedPokemons = [...state.pokemons, ...action.payload.pokemons];
             return {
                 ...state,
+                originalPokemons: [...state.originalPokemons, ...newPokemons],
                 pokemons: [...state.pokemons, ...newPokemons],
-                displayedPokemons: updatedPokemons.slice(-12),
+                displayedPokemons: [...state.pokemons, ...newPokemons].slice(-12),
                 loading: false,
                 currentPage: action.payload.currentPage
             }
@@ -71,38 +74,47 @@ export default function pokemonReducer(state = initialPokemonState, action) {
             }
 
         case 'filterByType':
-            const filteredByType = state.pokemons.flat().filter(pokemon => pokemon.Types ? pokemon.Types.map(type => type.name).includes(action.payload) : 'No type found')
+            const filteredByType = state.originalPokemons.filter(pokemon => pokemon.Types ? pokemon.Types.map(type => type.name).includes(action.payload) : 'No type found');
+
             return {
                 ...state,
+                pokemons: filteredByType,
                 displayedPokemons: filteredByType,
                 loading: false
             }
         case 'orderByOrigin':
+            const orderedByOrigin = action.payload === 'Created' ? state.createdPokemons : state.pokemons.flat().filter(pokemon => pokemon.apiId !== null)
             return {
                 ...state,
-                displayedPokemons: action.payload,
+                pokemons: orderedByOrigin,
+                displayedPokemons: orderedByOrigin,
                 loading: false
             }
 
         case 'resetFilters':
-            const resetFilters = state.pokemons.flat().filter(p => p.apiId !== null)
+            // const resetFilters = state.pokemons.flat().filter(p => p.apiId !== null)
 
             return {
                 ...state,
-                displayedPokemons: resetFilters.slice(-12),
+                pokemons: [...state.originalPokemons],
+                displayedPokemons: [...state.originalPokemons].slice(-12),
             }
 
         case 'filterByAttack':
+            const filteredByAttack = action.payload === 'asc' ? state.pokemons.flat().sort((a, b) => a.attack - b.attack) : state.pokemons.flat().sort((a, b) => b.attack - a.attack)
             return {
                 ...state,
-                displayedPokemons: action.payload,
+                pokemons: filteredByAttack,
+                displayedPokemons: filteredByAttack,
                 loading: false
             }
 
         case 'orderByName':
+            const orderedByName = action.payload === 'asc' ? state.pokemons.flat().sort((a, b) => a.name.localeCompare(b.name)) : state.pokemons.flat().sort((a, b) => b.name.localeCompare(a.name))
             return {
                 ...state,
-                displayedPokemons: action.payload,
+                pokemons: orderedByName,
+                displayedPokemons: orderedByName,
                 loading: false
             }
 
@@ -117,3 +129,5 @@ export default function pokemonReducer(state = initialPokemonState, action) {
             return state;
     }
 }
+
+
