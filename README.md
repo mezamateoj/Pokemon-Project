@@ -23,13 +23,14 @@ This is a fullstack web app that consumes the Pokemon API at https://pokeapi.co.
 ```
 git clone https://github.com/mezamateoj/Pokemon-Project.git
 cd Pokemon-Project
-npm install
+
 ```
 
 ### Start the backend
 
 ```
 cd api
+npm install
 npm start
 ```
 
@@ -37,5 +38,6 @@ npm start
 
 ```
 cd client
+npm install
 npm start
 ```

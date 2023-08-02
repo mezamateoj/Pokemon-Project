@@ -11,7 +11,6 @@ import {
 
 export default function Filters() {
 	const [filter, setFilter] = useState(""); // ["attack", "name"
-	console.log(filter);
 	const dispatch = useDispatch();
 	const types = useSelector((store) => store.types);
 
@@ -21,10 +20,9 @@ export default function Filters() {
 
 	async function handleOrigin(e) {
 		try {
-			console.log(e.target.value);
-			dispatch(filterByOrigin(e.target.value));
+			await dispatch(filterByOrigin(e.target.value));
 		} catch (error) {
-			console.log(error.response.data);
+			console.log(error);
 			alert(error.response.data.error);
 		}
 	}

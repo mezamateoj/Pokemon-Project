@@ -1,9 +1,15 @@
+const getAllTypes = require('../controllers/typesControllers')
+const getPokemonByName = require('../controllers/pokemonByName')
+const getPokemonByID = require('../controllers/pokemonById')
+const createImage = require('../controllers/createImageAI')
+
 const { Router } = require('express');
 const router = Router();
-const getAllTypes = require('../controllers/typesControllers')
-const { getPokemonByName, checkBody, checkID,
-    getAllPokemons, getPokemonByID, createPokemon,
-    sortByAttack, SortByName, filterByOrigin, createImage } = require('../controllers/pokemonControllers')
+
+const { checkBody, createPokemon } = require('../controllers/createPokemon')
+const { sortByAttack, SortByName, filterByOrigin } = require('../controllers/pokemonFilters')
+const { checkID, getAllPokemons, } = require('../controllers/pokemonControllers')
+
 
 router.param('id', checkID);
 

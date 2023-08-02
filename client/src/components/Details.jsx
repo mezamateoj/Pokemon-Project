@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
-import axios from "axios";
-import { useParams } from "react-router-dom";
 import "./styles/Details.css";
+import { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import Loading from "./Loading";
 
 export default function Details() {

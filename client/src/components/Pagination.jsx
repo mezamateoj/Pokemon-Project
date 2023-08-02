@@ -4,10 +4,10 @@ import { goToPage, nextPage, prevPage } from "../redux/actions/actions";
 import "./styles/Pagination.css";
 
 export default function Pagination({ page, currentPage }) {
+	const dispatch = useDispatch();
+
 	const [moreNumbers, setMoreNumbers] = useState(50);
 	const [lessNumbers, setLessNumbers] = useState(currentPage - 4);
-
-	const dispatch = useDispatch();
 
 	const totalPage = 106;
 	// calculate start and end item indexes
@@ -31,17 +31,17 @@ export default function Pagination({ page, currentPage }) {
 
 	function handleNextPage() {
 		dispatch(nextPage());
-		setLessNumbers(page - 4);
+		setLessNumbers(page - 10);
 	}
 
 	function handleLessNumbers() {
-		if (currentPage < 5) return;
+		if (currentPage < 10) return;
 		dispatch(goToPage(lessNumbers));
 	}
 
 	return (
 		<div className="pagination">
-			{page < 5 || lessNumbers < 1 ? (
+			{page < 10 || lessNumbers < 1 ? (
 				""
 			) : (
 				<>

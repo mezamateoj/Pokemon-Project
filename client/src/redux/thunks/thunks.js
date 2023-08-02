@@ -13,7 +13,6 @@ export function filterByOrigin(origin) {
         } catch (error) {
             dispatch({ type: 'switchLoading' })
             throw (error);
-
         }
     }
 }
