@@ -47,13 +47,13 @@ export function createPokemon(pokemon) {
     }
 }
 
-export function filterByName(name) {
+export function searchByName(name) {
     return async function filterByNameThunk(dispatch) {
         dispatch({ type: 'loading' })
 
         try {
             const response = await axios.get(`/pokemons/name?name=${name}`);
-            dispatch({ type: 'filterByName', payload: [response.data] })
+            dispatch({ type: 'searchByName', payload: [response.data] })
             console.log(response.data)
 
         } catch (error) {

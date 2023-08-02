@@ -1,7 +1,7 @@
 import "./styles/search.css";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { filterByName } from "../redux/thunks/thunks";
+import { searchByName } from "../redux/thunks/thunks";
 
 export default function Search() {
 	const [search, setSearch] = useState("");
@@ -14,7 +14,7 @@ export default function Search() {
 	async function dispatchFilterByName() {
 		if (search === "") return alert("Please enter a pokemon name");
 		try {
-			await dispatch(filterByName(search));
+			await dispatch(searchByName(search));
 			setSearch("");
 		} catch (error) {
 			console.log(error);

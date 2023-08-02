@@ -10,10 +10,10 @@ import store from './redux/store';
 import axios from 'axios';
 
 // work locally
-// axios.defaults.baseURL = 'http://localhost:3001';
+axios.defaults.baseURL = 'http://localhost:3001';
 
 // deploy to production
-axios.defaults.baseURL = 'https://pokemon-project-production-dbcd.up.railway.app/';
+// axios.defaults.baseURL = 'https://pokemon-project-production-dbcd.up.railway.app/';
 
 
 ReactDOM.render(

@@ -10,8 +10,9 @@ import {
 } from "../redux/thunks/thunks";
 
 export default function Filters() {
-	const [filter, setFilter] = useState(""); // ["attack", "name"
 	const dispatch = useDispatch();
+
+	const [filter, setFilter] = useState(""); // ["attack", "name"
 	const types = useSelector((store) => store.types);
 
 	function onSelectedType(e) {

@@ -5,7 +5,7 @@ const dbRelationship = async (response, newPokemon) => {
     // map over the types array and return an array with only the types names
     const pokemonTypes = response.types.map(type => type.type.name);
 
-    // Find or create the types in the database
+    // Find the types in the database
     const typeInstances = await Type.findAll({ where: { name: pokemonTypes, } });
 
     // Create the Pokemon in the database, and associate it with the types we created in the last step

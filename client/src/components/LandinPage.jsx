@@ -28,6 +28,7 @@ export default function LandingPage() {
 						and create your own!
 					</p>
 				</div>
+
 				<div className="title-img">
 					<img
 						src="./poke-img.webp"
@@ -36,6 +37,7 @@ export default function LandingPage() {
 					/>
 				</div>
 			</header>
+
 			<main className="context">
 				<h1>Start Exploring!</h1>
 				<p>
@@ -49,7 +51,6 @@ export default function LandingPage() {
 				>
 					Explore
 				</NavLink>
-				{/* <button>Start</button> */}
 			</main>
 		</div>
 	);

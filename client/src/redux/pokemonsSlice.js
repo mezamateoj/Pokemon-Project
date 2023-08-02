@@ -52,7 +52,7 @@ export default function pokemonReducer(state = initialPokemonState, action) {
                 ...state,
                 loading: true
             }
-        case 'filterByName':
+        case 'searchByName':
             // Assuming action.payload is an array of new pokemons
             const newPokemon = action.payload
 

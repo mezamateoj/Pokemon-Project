@@ -3,21 +3,24 @@ import Search from "./Search";
 import Pokemons from "./Pokemons";
 import "./styles/Home.css";
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux"; // using connect this hooks are not needed
 import { getAllPokemons } from "../redux/thunks/thunks";
 import Filters from "./Filters";
 import Pagination from "./Pagination";
 import Loading from "./Loading";
 import Footer from "./Footer";
+import { connect } from "react-redux";
 
-export default function Home() {
-	const dispatch = useDispatch();
+export function Home({ pokemons, getAllPokemons }) {
+	// Allows you to extract data from the Redux store state for use in this component, using a selector function.
+	const page = pokemons.currentPage;
+	console.log(page);
 
-	const page = useSelector((store) => store.pokemons.currentPage);
 	const [startPage, setStartPage] = useState(page);
-	const [endPage, setEndPage] = useState(page + 1); // showing five pages at a time
+	const [endPage, setEndPage] = useState(page + 1);
 
-	const pokemonsFromStore = useSelector((store) => store.pokemons);
+	// const pokemonsFromStore = useSelector((store) => store.pokemons);
+	const pokemonsFromStore = pokemons;
 	console.log(pokemonsFromStore);
 
 	const loading = pokemonsFromStore.loading;
@@ -25,10 +28,10 @@ export default function Home() {
 	const currentPage = pokemonsFromStore.currentPage;
 
 	useEffect(() => {
-		dispatch(getAllPokemons(page));
+		getAllPokemons(page);
 		setStartPage(page);
 		setEndPage(page + 3);
-	}, [page, dispatch]); //  I've added the page variable as a dependency to useEffect. This means that useEffect will be triggered each time the page state changes.
+	}, [page, getAllPokemons]); //  I've added the page variable as a dependency to useEffect. This means that useEffect will be triggered each time the page state changes.
 
 	return (
 		<>
@@ -60,3 +63,17 @@ export default function Home() {
 		</>
 	);
 }
+
+function mapStateToProps(state) {
+	return {
+		pokemons: state.pokemons,
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		getAllPokemons: (page) => dispatch(getAllPokemons(page)),
+	};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

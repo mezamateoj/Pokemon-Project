@@ -52,7 +52,6 @@ const getAllPokemons = async (req, res) => {
         }))
 
         const all = details
-
         const count = await Pokemon.count();
         const totalPages = Math.ceil(count / limit);
 

@@ -10,7 +10,7 @@ const { checkBody, createPokemon } = require('../controllers/createPokemon')
 const { sortByAttack, SortByName, filterByOrigin } = require('../controllers/pokemonFilters')
 const { checkID, getAllPokemons, } = require('../controllers/pokemonControllers')
 
-
+// param middleware, only runs if there is a param called id
 router.param('id', checkID);
 
 router
@@ -20,6 +20,7 @@ router
 router
     .route('/pokemons')
     .get(getAllPokemons)
+    // run middleware to check body before creating pokemon
     .post(checkBody, createPokemon)
 
 router
