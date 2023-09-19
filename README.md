@@ -8,6 +8,8 @@ This is a fullstack web app that consumes the Pokemon API at https://pokeapi.co.
 -   Filter them by attack, name, type and origin
 -   Create your Pokemon and generate and image using DALL-E from openai
 
+You can check the full app here https://pokemon.up.railway.app/
+
 ## **💻 Technologies used**
 
 -   **React**,
