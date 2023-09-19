@@ -1,16 +1,16 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 
-import { filterByType, resetFilters } from "../redux/actions/actions";
-import "./styles/Filters.css";
-import { useState } from "react";
+import { filterByType, resetFilters } from '../redux/actions/actions';
+import './styles/Filters.css';
+import { useState } from 'react';
 import {
 	filterByAttack,
 	orderByName,
 	filterByOrigin,
-} from "../redux/thunks/thunks";
+} from '../redux/thunks/thunks';
 
 export default function Filters() {
-	const [filter, setFilter] = useState(""); // ["attack", "name"
+	const [filter, setFilter] = useState(''); // ["attack", "name"
 	const dispatch = useDispatch();
 	const types = useSelector((store) => store.types);
 
@@ -20,7 +20,9 @@ export default function Filters() {
 
 	async function handleOrigin(e) {
 		try {
-			await dispatch(filterByOrigin(e.target.value));
+			await new Promise((resolve) => {
+				resolve(dispatch(filterByOrigin(e.target.value)));
+			});
 		} catch (error) {
 			console.log(error);
 			alert(error.response.data.error);
@@ -32,10 +34,10 @@ export default function Filters() {
 	}
 
 	function handleFilterByAttackorName(e) {
-		if (filter === "attack") {
+		if (filter === 'attack') {
 			console.log(e.target.value);
 			dispatch(filterByAttack(e.target.value));
-		} else if (filter === "name") {
+		} else if (filter === 'name') {
 			console.log(e.target.value);
 
 			dispatch(orderByName(e.target.value));
@@ -48,7 +50,7 @@ export default function Filters() {
 				<img
 					src="pokeball.png"
 					alt="pokeball"
-					style={{ width: "32px" }}
+					style={{ width: '32px' }}
 				/>
 			}
 			<div className="order-filters">

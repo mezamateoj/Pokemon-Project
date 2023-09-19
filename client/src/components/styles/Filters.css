@@ -65,3 +65,39 @@
 	text-align: center;
 	padding: 5px 0;
 }
+
+@media (max-width: 700px) {
+	.filters {
+		display: flex;
+		flex-direction: column;
+		width: 90%;
+	}
+
+	.filters > img {
+		display: none;
+	}
+
+	.order-filters {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.select-filters {
+		display: flex;
+		flex-direction: column;
+		width: 70px;
+	}
+
+	.filter-fieldset > legend {
+		display: none;
+	}
+
+	.filter-fieldset {
+		border: none;
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+	}
+}

@@ -86,3 +86,39 @@ p {
 	background: #f3bf00;
 	box-shadow: 0 6px 20px rgba(231, 205, 62, 0.23);
 }
+
+@media (max-width: 700px) {
+	.main {
+		height: 100%;
+		font-size: small;
+	}
+	.title {
+		height: 50%;
+		font-size: small;
+	}
+	.title-container > h1 {
+		height: 100%;
+		font-size: medium;
+		text-align: center;
+	}
+	.title-container > p {
+		width: 100%;
+		font-size: small;
+		flex-direction: column;
+	}
+	.title-img > img {
+		display: none;
+	}
+	.context {
+		margin-top: 100px;
+		height: 50%;
+		width: 80%;
+	}
+	.context > h1 {
+		margin: 10px 0 10px 0;
+		font-size: small;
+	}
+	.start {
+		margin: 10px 0 10px 0;
+	}
+}

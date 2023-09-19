@@ -20,6 +20,7 @@ const createImage = async (req, res) => {
         });
 
         const imgUrl = response.data.data[0].url
+        console.log(imgUrl)
 
         return res.status(200).json({ success: true, data: imgUrl })
 

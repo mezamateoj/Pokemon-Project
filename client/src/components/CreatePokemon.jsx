@@ -1,63 +1,68 @@
-import "./styles/CreatePokemon.css";
-import { useState } from "react";
-import validation from "./validation";
-import { useDispatch } from "react-redux";
-import { createPokemon } from "../redux/thunks/thunks";
-import FormInput from "./FormInput";
-import CreateImage from "./CreateImage";
+import './styles/CreatePokemon.css';
+import { useEffect, useState } from 'react';
+import validation from './validation';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPokemon } from '../redux/thunks/thunks';
+import FormInput from './FormInput';
+import CreateImage from './CreateImage';
+import { getTypes } from '../redux/typesSlice';
 
 const initialState = {
-	name: "",
-	image: "",
-	health: "",
-	attack: "",
-	defense: "",
-	speed: "",
+	name: '',
+	image: '',
+	health: '',
+	attack: '',
+	defense: '',
+	speed: '',
 	types: [],
 };
 
 const inputs = [
-	{ id: 1, name: "name", placeholder: "Name", label: "Name", error: "" },
+	{ id: 1, name: 'name', placeholder: 'Name', label: 'Name', error: '' },
 	{
 		id: 2,
-		name: "image",
-		placeholder: "Image",
-		label: "Image Url",
-		error: "",
+		name: 'image',
+		placeholder: 'Image',
+		label: 'Image Url',
+		error: '',
 	},
 	{
 		id: 3,
-		name: "health",
-		placeholder: "Health",
-		label: "Health",
-		error: "",
+		name: 'health',
+		placeholder: 'Health',
+		label: 'Health',
+		error: '',
 	},
 	{
 		id: 4,
-		name: "attack",
-		placeholder: "Attack",
-		label: "Attack",
-		error: "",
+		name: 'attack',
+		placeholder: 'Attack',
+		label: 'Attack',
+		error: '',
 	},
 	{
 		id: 5,
-		name: "defense",
-		placeholder: "Defense",
-		label: "Defense",
-		error: "",
+		name: 'defense',
+		placeholder: 'Defense',
+		label: 'Defense',
+		error: '',
 	},
-	{ id: 6, name: "speed", placeholder: "Speed", label: "Speed", error: "" },
-	{ id: 7, name: "types", placeholder: "Types", label: "Types", error: "" },
+	{ id: 6, name: 'speed', placeholder: 'Speed', label: 'Speed', error: '' },
+	{ id: 7, name: 'types', placeholder: 'Types', label: 'Types', error: '' },
 ];
 
 export default function CreatePokemon() {
 	const [formPokemon, setFormPokemon] = useState(initialState);
 	const [errors, setErrors] = useState(false);
 	// state for image creation component
-	const [prompt, setPrompt] = useState("");
-	const [image, setImage] = useState("");
+	const [prompt, setPrompt] = useState('');
+	const [image, setImage] = useState('');
 
 	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(getTypes());
+	}, [dispatch]);
 
 	async function handleSubmit(e) {
 		e.preventDefault();
@@ -65,19 +70,19 @@ export default function CreatePokemon() {
 			dispatch(createPokemon(formPokemon));
 			setFormPokemon(initialState);
 			setErrors(initialState);
-			setPrompt("");
-			setImage("");
-			alert("Pokemon created successfully!");
+			setPrompt('');
+			setImage('');
+			alert('Pokemon created successfully!');
 		} catch (error) {
 			alert(error.response.data.error);
 		}
 	}
 
 	function onChange(e) {
-		if (e.target.name === "types") {
+		if (e.target.name === 'types') {
 			setFormPokemon({
 				...formPokemon,
-				types: e.target.value.split(",").map((type) => type.trim()),
+				types: e.target.value.split(',').map((type) => type.trim()),
 			});
 			return;
 		}
@@ -100,6 +105,8 @@ export default function CreatePokemon() {
 			(value) => !value || value.length === 0
 		);
 	}
+
+	console.log(formPokemon);
 
 	return (
 		<div className="create-container">

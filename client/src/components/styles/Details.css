@@ -138,3 +138,41 @@
 .water {
 	background-color: #58abf6;
 }
+
+@media (max-width: 700px) {
+	.details-container {
+		width: 90%;
+		height: 90%;
+		font-size: small;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: row-reverse;
+		margin-right: 20px;
+	}
+	.detail-img {
+		width: 100%;
+	}
+	.detail-img > img {
+		width: 50%;
+	}
+	.stats-container {
+		width: 50%;
+		height: 100%;
+	}
+	.text-details {
+		width: 100%;
+	}
+	.text-details > h1 {
+		font-size: 1.5rem;
+	}
+	.stat-total {
+		width: 100%;
+	}
+	.stat {
+		width: 100%;
+	}
+	.label-detail {
+		font-size: 0.8rem;
+	}
+}

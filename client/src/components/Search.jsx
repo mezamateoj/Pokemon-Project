@@ -1,10 +1,10 @@
-import "./styles/search.css";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { filterByName } from "../redux/thunks/thunks";
+import './styles/search.css';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { filterByName } from '../redux/thunks/thunks';
 
 export default function Search() {
-	const [search, setSearch] = useState("");
+	const [search, setSearch] = useState('');
 	const dispatch = useDispatch();
 
 	function onChange(e) {
@@ -12,10 +12,10 @@ export default function Search() {
 	}
 
 	async function dispatchFilterByName() {
-		if (search === "") return alert("Please enter a pokemon name");
+		if (search === '') return alert('Please enter a pokemon name');
 		try {
-			await dispatch(filterByName(search));
-			setSearch("");
+			await dispatch(filterByName(search.toLowerCase()));
+			setSearch('');
 		} catch (error) {
 			console.log(error);
 			alert(`Pokemon: ${error.response.data.message}`);

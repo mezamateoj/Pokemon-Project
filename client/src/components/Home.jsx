@@ -1,14 +1,14 @@
-import Logo from "./Logo";
-import Search from "./Search";
-import Pokemons from "./Pokemons";
-import "./styles/Home.css";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllPokemons } from "../redux/thunks/thunks";
-import Filters from "./Filters";
-import Pagination from "./Pagination";
-import Loading from "./Loading";
-import Footer from "./Footer";
+import Logo from './Logo';
+import Search from './Search';
+import Pokemons from './Pokemons';
+import './styles/Home.css';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllPokemons } from '../redux/thunks/thunks';
+import Filters from './Filters';
+import Pagination from './Pagination';
+import Loading from './Loading';
+import Footer from './Footer';
 
 export default function Home() {
 	const dispatch = useDispatch();

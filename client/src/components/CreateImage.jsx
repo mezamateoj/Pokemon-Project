@@ -1,14 +1,14 @@
-import "./styles/CreatePokemon.css";
+import './styles/CreatePokemon.css';
 
-import { useState } from "react";
-import axios from "axios";
+import { useState } from 'react';
+import axios from 'axios';
 
 function CreateImage({ prompt, setPrompt, image, setImage }) {
 	const [loading, setLoading] = useState(false);
 
 	const createImage = async (prompt) => {
 		try {
-			if (prompt === "") return alert("Please enter a prompt");
+			if (prompt === '') return alert('Please enter a prompt');
 			setLoading(true);
 			const res = await axios.post(`/images`, {
 				prompt: prompt,
@@ -25,7 +25,7 @@ function CreateImage({ prompt, setPrompt, image, setImage }) {
 	return (
 		<div className="create">
 			<div>
-				<label htmlFor="" style={{ color: "#fff" }}>
+				<label htmlFor="" style={{ color: '#fff' }}>
 					Generate Image using DALL·E AI
 				</label>
 			</div>
@@ -53,11 +53,17 @@ function CreateImage({ prompt, setPrompt, image, setImage }) {
 									width="150px"
 								/>
 
-								<span style={{ fontSize: "small" }}>
+								<span style={{ fontSize: 'small' }}>
 									Copy and paste the Url in the image creation
 									form!
 								</span>
-								<span style={{ fontSize: "x-small" }}>
+								<span
+									style={{
+										fontSize: 'x-small',
+										textAlign: 'justify',
+										padding: '10px 50px',
+									}}
+								>
 									{image}
 								</span>
 							</>

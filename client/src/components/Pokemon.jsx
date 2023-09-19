@@ -1,5 +1,5 @@
-import "./styles/Pokemon.css";
-import { NavLink } from "react-router-dom";
+import './styles/Pokemon.css';
+import { NavLink } from 'react-router-dom';
 
 export const getTypeIconSrc = (type) => `./types/${type}.svg`;
 
@@ -7,7 +7,7 @@ export default function Pokemon({ details }) {
 	return (
 		<NavLink
 			to={`/details/${details.id}`}
-			style={{ textDecoration: "none" }}
+			style={{ textDecoration: 'none' }}
 		>
 			<div className={`card ${details.Types[0].name}-card`}>
 				<div className="image-card">

@@ -1,5 +1,5 @@
-import "./styles/Pokemons.css";
-import Pokemon from "./Pokemon";
+import './styles/Pokemons.css';
+import Pokemon from './Pokemon';
 
 export default function Pokemons({ displayPokemons }) {
 	return (
